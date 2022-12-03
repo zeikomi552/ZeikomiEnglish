@@ -1,9 +1,11 @@
-﻿using MVVMCore.BaseClass;
+﻿using Microsoft.Web.WebView2.WinForms;
+using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
 using MVVMCore.Common.Wrapper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
@@ -166,6 +168,32 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
+        #region キャッシュの保存先ディレクトリ
+        /// <summary>
+        /// キャッシュの保存先ディレクトリ
+        /// </summary>
+        private string _WebViewDir = "EBWebView";
+        #endregion
+
+        #region 初期化処理(WebView2の配布)
+        /// <summary>
+        /// 初期化処理(WebView2の配布)
+        /// </summary>
+        private async void InitializeAsync(MainWindow wnd)
+        {
+            var browserExecutableFolder = Path.Combine(MVVMCore.Common.Utilities.PathManager.GetApplicationFolder(), _WebViewDir);
+
+            // カレントディレクトリの作成
+            MVVMCore.Common.Utilities.PathManager.CreateDirectory(browserExecutableFolder);
+
+            // 環境の作成
+            var webView2Environment = await Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(null, browserExecutableFolder);
+
+            // 固定バージョンのブラウザを配布
+            await wnd.WebView2Ctrl.EnsureCoreWebView2Async(webView2Environment);
+        }
+        #endregion
+
         #region 初期化処理
         /// <summary>
         /// 初期化処理
@@ -179,7 +207,15 @@ namespace ZeikomiEnglish.ViewModels
                 var wnd = sender as MainWindow;
                 if (wnd != null)
                 {
-                    wnd.WebView2Ctrl.EnsureCoreWebView2Async(null);
+                    try
+                    {
+                        InitializeAsync(wnd);
+                    }
+                    catch
+                    {
+                        ShowMessage.ShowNoticeOK("WebView2ランタイムがインストールされていないようです。\r\nインストールしてください", "通知");
+                        URLUtility.OpenUrl("https://developer.microsoft.com/en-us/microsoft-edge/webview2/");
+                    }
                 }
 
 

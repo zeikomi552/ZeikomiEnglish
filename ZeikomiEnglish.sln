@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeikomiEnglish", "ZeikomiEnglish\ZeikomiEnglish.csproj", "{0F30413F-98AB-47CB-BF9A-529AB3F5153D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeikomiEnglish", "ZeikomiEnglish\ZeikomiEnglish.csproj", "{0F30413F-98AB-47CB-BF9A-529AB3F5153D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVVMCore", "MVVMCore\MVVMCore.csproj", "{DAC2414E-0937-4461-BEAD-48B50FB5C439}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ZeikomiEnglishInstaller", "ZeikomiEnglishInstaller\ZeikomiEnglishInstaller.vdproj", "{B752B67E-FBB3-4340-98A5-7C9291E1A7D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,8 @@ Global
 		{DAC2414E-0937-4461-BEAD-48B50FB5C439}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAC2414E-0937-4461-BEAD-48B50FB5C439}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAC2414E-0937-4461-BEAD-48B50FB5C439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B752B67E-FBB3-4340-98A5-7C9291E1A7D2}.Debug|Any CPU.ActiveCfg = Debug
+		{B752B67E-FBB3-4340-98A5-7C9291E1A7D2}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
