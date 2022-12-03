@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TitleCharacterCasing="Normal"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
@@ -87,7 +88,9 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <TextBox AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox materialDesign:HintAssist.Hint="Please Enter English"
+                                     mah:TextBoxHelper.ClearTextButton="True"
+                                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="TextChanged">
                                         <b:CallMethodAction TargetObject="{Binding}" MethodName="TextChanged"/>
@@ -111,7 +114,7 @@
                         </Grid>
                     </GroupBox>
                     <GroupBox Grid.Row="1" Margin="5,5,5,5" Header="フレーズ">
-                        <DataGrid x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding PhraseItems.Items}" SelectedItem="{Binding PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding PhraseItems.Items}" SelectedItem="{Binding PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="単語数" Binding="{Binding WordCount}"/>
                                 <DataGridTextColumn Header="再生時間(秒)" Binding="{Binding SpeechSec, StringFormat={}{0:N3}}"/>

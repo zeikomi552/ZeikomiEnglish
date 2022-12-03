@@ -374,8 +374,9 @@ namespace ZeikomiEnglish.ViewModels
                         }
 
                         // 音声再生
+                        int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
                         var tm = PhraseVoice(this.PhraseItems.SelectedItem!.Phrase);  // フレーズ再生
-                        this.PhraseItems.SelectedItem.SpeechSec = tm.TotalSeconds;
+                        this.PhraseItems.ElementAt(index).SpeechSec = tm.TotalSeconds;
 
                     }
                 });
@@ -413,9 +414,9 @@ namespace ZeikomiEnglish.ViewModels
                             System.Threading.Thread.Sleep(100);
                             var tm = PhraseVoice(tmp.Phrase);    // フレーズ再生
 
-                            if (this.PhraseItems.SelectedItem != null)
+                            if (this.PhraseItems.Count > index && this.PhraseItems.ElementAt(index) != null)
                             {
-                                this.PhraseItems.SelectedItem.SpeechSec = tm.TotalSeconds;
+                                this.PhraseItems.ElementAt(index).SpeechSec = tm.TotalSeconds;
                             }
                             index++;
                         }

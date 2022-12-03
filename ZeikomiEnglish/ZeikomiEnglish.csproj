@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Common\icons\globe.svg" />
+    <None Remove="Common\icons\unmute.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.2.5" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
@@ -21,12 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Common\icons\globe.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Common\icons\unmute.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Common\icons\globe.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\icons\unmute.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
