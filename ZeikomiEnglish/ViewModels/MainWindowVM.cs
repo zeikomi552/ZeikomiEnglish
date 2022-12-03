@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
@@ -231,7 +232,18 @@ namespace ZeikomiEnglish.ViewModels
                 // nullチェック
                 if (this.VoiceList.Items.FirstOrDefault() != null)
                 {
-                    this.VoiceList.SelectedItem = this.VoiceList.Items.FirstOrDefault()!;
+                    var tmp = (from x in this.VoiceList.Items
+                               where x.VoiceInfo.Name.Contains("Zira")
+                               select x).FirstOrDefault();
+
+                    if (tmp == null)
+                    {
+                        this.VoiceList.SelectedItem = this.VoiceList.Items.FirstOrDefault()!;
+                    }
+                    else
+                    {
+                        this.VoiceList.SelectedItem = tmp;
+                    }
                 }
 
             }

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Common\icons\globe.svg" />
+    <None Remove="Common\icons\SplashSchreen.png" />
     <None Remove="Common\icons\unmute.svg" />
   </ItemGroup>
 
@@ -35,6 +36,10 @@
     <Resource Include="Common\icons\unmute.svg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="Common\icons\SplashSchreen.png" />
   </ItemGroup>
 
 </Project>
