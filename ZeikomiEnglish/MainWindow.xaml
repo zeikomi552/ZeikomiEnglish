@@ -90,7 +90,8 @@
                             </Grid.RowDefinitions>
                             <TextBox materialDesign:HintAssist.Hint="Please Enter English"
                                      mah:TextBoxHelper.ClearTextButton="True"
-                                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     TextWrapping="WrapWithOverflow">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="TextChanged">
                                         <b:CallMethodAction TargetObject="{Binding}" MethodName="TextChanged"/>
@@ -118,7 +119,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="単語数" Binding="{Binding WordCount}"/>
                                 <DataGridTextColumn Header="再生時間(秒)" Binding="{Binding SpeechSec, StringFormat={}{0:N3}}"/>
-                                <DataGridTextColumn Header="フレーズ" Binding="{Binding Phrase}"/>
+                                <DataGridTextColumn Header="フレーズ" Binding="{Binding Phrase}" Width="*"/>
                             </DataGrid.Columns>
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseDoubleClick">

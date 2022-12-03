@@ -8,6 +8,7 @@ using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
+using ZeikomiEnglish.Common.Util;
 using ZeikomiEnglish.Models;
 
 namespace ZeikomiEnglish.ViewModels
@@ -165,6 +166,12 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
+        #region 初期化処理
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public override void Init(object sender, EventArgs e)
         {
             try
@@ -197,7 +204,14 @@ namespace ZeikomiEnglish.ViewModels
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
+        #endregion
 
+        #region 閉じる処理
+        /// <summary>
+        /// 閉じる処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public override void Close(object sender, EventArgs e)
         {
             try
@@ -209,7 +223,9 @@ namespace ZeikomiEnglish.ViewModels
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
+        #endregion
 
+        #region フレーズリストの選択が変化した場合の処理
         /// <summary>
         /// フレーズリストの選択が変化した場合の処理
         /// </summary>
@@ -221,7 +237,7 @@ namespace ZeikomiEnglish.ViewModels
             // フレーズリストをクリア
             this.PhraseItems.Items.Clear();
 
-            // リスト数文まわす
+            // リスト数まわす
             foreach (var tmp in list)
             {
                 if (tmp.Trim().Length > 0)
@@ -229,13 +245,13 @@ namespace ZeikomiEnglish.ViewModels
                     // フレーズリストに追加
                     this.PhraseItems.Items.Add(new PhraseM()
                     {
-                        Phrase = tmp
+                        Phrase = tmp.Trim()
                     }
                     );
                 }
             }
         }
-
+        #endregion
 
         #region フレーズのダブルクリック
         /// <summary>
@@ -313,8 +329,10 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
-
-
+        #region 行分割
+        /// <summary>
+        /// 行分割
+        /// </summary>
         public void PeriodLineBreak()
         {
             try
@@ -329,8 +347,14 @@ namespace ZeikomiEnglish.ViewModels
 
             }
         }
+        #endregion
 
-
+        #region 選択行が変化した際の処理
+        /// <summary>
+        /// 選択行が変化した際の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SelectedItemChanged(object sender, EventArgs e)
         {
             try
@@ -338,10 +362,10 @@ namespace ZeikomiEnglish.ViewModels
                 // ウィンドウを取得
                 var wnd = VisualTreeHelperWrapper.GetWindow<MainWindow>(sender) as MainWindow;
 
+                // ウィンドウが取得できた場合
                 if (wnd != null)
                 {
-                    wnd.phrase_dg.ScrollIntoView(wnd.phrase_dg.Items[wnd.phrase_dg.SelectedIndex]); //scroll to last
-                    wnd.phrase_dg.UpdateLayout();
+                    ScrollbarUtility.TopRow(wnd.phrase_dg);
                 }
             }
             catch
@@ -349,6 +373,8 @@ namespace ZeikomiEnglish.ViewModels
 
             }
         }
+        #endregion
+
         #region フレーズを音声再生する
         /// <summary>
         /// フレーズを音声再生する
@@ -375,7 +401,7 @@ namespace ZeikomiEnglish.ViewModels
 
                         // 音声再生
                         int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
-                        var tm = PhraseVoice(this.PhraseItems.SelectedItem!.Phrase);  // フレーズ再生
+                        var tm = VoiceUtility.PhraseVoice(this.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);  // フレーズ再生
                         this.PhraseItems.ElementAt(index).SpeechSec = tm.TotalSeconds;
 
                     }
@@ -412,7 +438,7 @@ namespace ZeikomiEnglish.ViewModels
 
                             this.PhraseItems.SelectedItem = tmp;
                             System.Threading.Thread.Sleep(100);
-                            var tm = PhraseVoice(tmp.Phrase);    // フレーズ再生
+                            var tm = VoiceUtility.PhraseVoice(tmp.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);    // フレーズ再生
 
                             if (this.PhraseItems.Count > index && this.PhraseItems.ElementAt(index) != null)
                             {
@@ -429,34 +455,6 @@ namespace ZeikomiEnglish.ViewModels
             }
             catch
             {
-            }
-        }
-        #endregion
-
-        #region フレーズを音声再生する
-        /// <summary>
-        /// フレーズを音声再生する
-        /// </summary>
-        /// <param name="phrase">フレーズ</param>
-        private TimeSpan PhraseVoice(string phrase)
-        {
-            try
-            {
-                var synthesizer = new SpeechSynthesizer();
-                var tmp = synthesizer.GetInstalledVoices();
-                synthesizer.SetOutputToDefaultAudioDevice();
-                synthesizer.SelectVoice(this.VoiceList.SelectedItem.VoiceInfo.Name);
-                synthesizer.Rate = this.SpeechRate;
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-                synthesizer.Speak(phrase);
-                sw.Stop();
-
-                return sw.Elapsed;
-            }
-            catch
-            {
-                return TimeSpan.Zero;
             }
         }
         #endregion
