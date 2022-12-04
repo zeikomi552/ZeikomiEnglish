@@ -78,7 +78,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <GroupBox Margin="5,5,5,5" Header="テキスト">
+                <GroupBox Margin="5,5,5,5" Header="Text">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -115,7 +115,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Margin="5,5,5,5" Header="フレーズ">
+                    <GroupBox Margin="5,5,5,5" Header="Phrase">
                         <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding PhraseItems.Items}" SelectedItem="{Binding PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="単語数" Binding="{Binding WordCount}"/>
@@ -132,7 +132,7 @@
                             </b:Interaction.Triggers>
                         </DataGrid>
                     </GroupBox>
-                    <GroupBox Margin="5" Grid.Column="1" Header="単語">
+                    <GroupBox Margin="5" Grid.Column="1" Header="Word">
                         <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding PhraseItems.SelectedItem.Words.Items}" 
                               SelectedItem="{Binding PhraseItems.SelectedItem.Words.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
@@ -150,7 +150,7 @@
                 </Grid>
             </Grid>
 
-            <GroupBox Margin="5" Header="ブラウザ" Grid.Column="1">
+            <GroupBox Margin="5" Header="Dictionary" Grid.Column="1">
                 <Wpf:WebView2 x:Name="WebView2Ctrl" Margin="5"/>
             </GroupBox>
 
