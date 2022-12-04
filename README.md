@@ -32,7 +32,8 @@ https://www.youtube.com/embed/kTKoU2P7Qec
 
 https://github.com/zeikomi552/ZeikomiEnglish/releases
 
-Windows10以前のものは、WebView2のインストールが必要です
+Windows10以前の方は、WebView2のインストールが必要です
+
 https://developer.microsoft.com/ja-jp/microsoft-edge/webview2/
 
 ![](img-README/README-02.png)
