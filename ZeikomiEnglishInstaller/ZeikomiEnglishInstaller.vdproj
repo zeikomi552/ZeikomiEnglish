@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_27CD0C832F1643E695DA2ACBF5F20EA5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9120CAAA5CC34F3AB234836E32792A32"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -84,6 +90,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_27CD0C832F1643E695DA2ACBF5F20EA5"
+            {
+            "SourcePath" = "8:..\\ZeikomiEnglish\\Common\\icons\\favicon.ico"
+            "TargetName" = "8:favicon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_C9C15443A49B4BFEB5D02E4E338F866C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -141,7 +167,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ZeikomiEnglish"
         "ProductCode" = "8:{37076DC0-C6D2-4541-87A2-567E042968E5}"
-        "PackageCode" = "8:{180F7C6D-DED1-456D-BC18-DD1AA01B3C41}"
+        "PackageCode" = "8:{3C44BD4B-6AB1-45B7-A461-7D7CE2DD762A}"
         "UpgradeCode" = "8:{D0F215E0-73E3-4F1B-B7BB-9DC0E58B8212}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -158,7 +184,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_27CD0C832F1643E695DA2ACBF5F20EA5"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -272,7 +298,21 @@
             "Target" = "8:_9120CAAA5CC34F3AB234836E32792A32"
             "Folder" = "8:_578117E139114F21AB038D4C6A3735FF"
             "WorkingFolder" = "8:_C9C15443A49B4BFEB5D02E4E338F866C"
-            "Icon" = "8:"
+            "Icon" = "8:_27CD0C832F1643E695DA2ACBF5F20EA5"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C6D4635CA1F74A09AB23D78245182289"
+            {
+            "Name" = "8:ZeikomiEnglishへのショートカット"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_9120CAAA5CC34F3AB234836E32792A32"
+            "Folder" = "8:_EB12EAB528A34439B12818EBD8B3CAEC"
+            "WorkingFolder" = "8:_C9C15443A49B4BFEB5D02E4E338F866C"
+            "Icon" = "8:_27CD0C832F1643E695DA2ACBF5F20EA5"
             "Feature" = "8:"
             }
         }

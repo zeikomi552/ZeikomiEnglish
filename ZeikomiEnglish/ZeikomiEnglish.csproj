@@ -8,12 +8,19 @@
     <Company>Zeikomi</Company>
     <Authors>Zeikomi552</Authors>
     <Copyright>Zeikomi552</Copyright>
+    <PackageIcon>main-icon.png</PackageIcon>
+    <ApplicationIcon>Common\icons\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Common\icons\favicon.ico" />
     <None Remove="Common\icons\globe.svg" />
     <None Remove="Common\icons\SplashSchreen.png" />
     <None Remove="Common\icons\unmute.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Common\icons\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\icons\favicon.ico" />
     <Resource Include="Common\icons\globe.svg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -40,6 +48,13 @@
 
   <ItemGroup>
     <SplashScreen Include="Common\icons\SplashSchreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Common\icons\main-icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
