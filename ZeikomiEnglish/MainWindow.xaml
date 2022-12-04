@@ -136,7 +136,7 @@
                         <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding PhraseItems.SelectedItem.Words.Items}" 
                               SelectedItem="{Binding PhraseItems.SelectedItem.Words.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="単語" Binding="{Binding Word}"/>
+                                <DataGridTextColumn Header="単語" Binding="{Binding Word}" Width="*"/>
                             </DataGrid.Columns>
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseDoubleClick">

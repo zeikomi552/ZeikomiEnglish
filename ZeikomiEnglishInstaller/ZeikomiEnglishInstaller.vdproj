@@ -167,11 +167,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ZeikomiEnglish"
         "ProductCode" = "8:{37076DC0-C6D2-4541-87A2-567E042968E5}"
-        "PackageCode" = "8:{3C44BD4B-6AB1-45B7-A461-7D7CE2DD762A}"
+        "PackageCode" = "8:{7F389184-1A74-4D3C-ADF4-E466F22D005C}"
         "UpgradeCode" = "8:{D0F215E0-73E3-4F1B-B7BB-9DC0E58B8212}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
         "ProductVersion" = "8:0.0.1"
@@ -716,7 +716,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9120CAAA5CC34F3AB234836E32792A32"
             {
-            "SourcePath" = "8:..\\ZeikomiEnglish\\obj\\Debug\\net6.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\ZeikomiEnglish\\obj\\Release\\net6.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C9C15443A49B4BFEB5D02E4E338F866C"
