@@ -119,6 +119,7 @@
                         <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding PhraseItems.Items}" SelectedItem="{Binding PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="単語数" Binding="{Binding WordCount}"/>
+                                <DataGridTextColumn Header="再生回数" Binding="{Binding PlayCount}"/>
                                 <DataGridTextColumn Header="再生時間(秒)" Binding="{Binding SpeechSec, StringFormat={}{0:N3}}"/>
                                 <DataGridTextColumn Header="フレーズ" Binding="{Binding Phrase}" Width="*"/>
                             </DataGrid.Columns>

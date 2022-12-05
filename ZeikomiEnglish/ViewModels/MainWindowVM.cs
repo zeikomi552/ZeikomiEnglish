@@ -450,7 +450,11 @@ namespace ZeikomiEnglish.ViewModels
                         // 音声再生
                         int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
                         var tm = VoiceUtility.PhraseVoice(this.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);  // フレーズ再生
-                        this.PhraseItems.ElementAt(index).SpeechSec = tm.TotalSeconds;
+                        
+                        // オブジェクトに保存
+                        var phrase_tmp = this.PhraseItems.ElementAt(index);
+                        phrase_tmp.SpeechSec = tm.TotalSeconds; // 再生時間保存
+                        phrase_tmp.PlayCount++;                 // 再生回数インクリメント
 
                     }
                 });
@@ -490,7 +494,10 @@ namespace ZeikomiEnglish.ViewModels
 
                             if (this.PhraseItems.Count > index && this.PhraseItems.ElementAt(index) != null)
                             {
-                                this.PhraseItems.ElementAt(index).SpeechSec = tm.TotalSeconds;
+                                // オブジェクトに保存
+                                var phrase_tmp = this.PhraseItems.ElementAt(index);
+                                phrase_tmp.SpeechSec = tm.TotalSeconds; // 再生時間保存
+                                phrase_tmp.PlayCount++;                 // 再生回数インクリメント
                             }
                             index++;
                         }

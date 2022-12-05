@@ -63,6 +63,10 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
+        #region 単語数
+        /// <summary>
+        /// 単語数
+        /// </summary>
         public int WordCount
         {
             get
@@ -70,6 +74,32 @@ namespace ZeikomiEnglish.Models
                 return this.Words.Items.Count;
             }
         }
+        #endregion
+
+        #region 再生回数[PlayCount]プロパティ
+        /// <summary>
+        /// 再生回数[PlayCount]プロパティ用変数
+        /// </summary>
+        int _PlayCount = 0;
+        /// <summary>
+        /// 再生回数[PlayCount]プロパティ
+        /// </summary>
+        public int PlayCount
+        {
+            get
+            {
+                return _PlayCount;
+            }
+            set
+            {
+                if (!_PlayCount.Equals(value))
+                {
+                    _PlayCount = value;
+                    NotifyPropertyChanged("PlayCount");
+                }
+            }
+        }
+        #endregion
 
         #region スピーチの再生時間[SpeechSec]プロパティ
         /// <summary>
