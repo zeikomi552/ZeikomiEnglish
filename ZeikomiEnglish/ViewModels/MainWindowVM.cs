@@ -387,7 +387,15 @@ namespace ZeikomiEnglish.ViewModels
             {
                 if (this.Text != null)
                 {
-                    this.Text = this.Text.Replace("\r", "").Replace("\n", "").Replace(".", ".\r\n").Replace(".\r\n\"", ".\"\r\n");
+                    this.Text = this.Text.Replace("\r", "")
+                        .Replace("\n", "")
+                        .Replace(".", ".\r\n")
+                        .Replace("!", "!\r\n")
+                        .Replace("?", "?\r\n")
+                        .Replace(".\r\n\"", ".\"\r\n")
+                        .Replace("!\r\n\"", "!\"\r\n")
+                        .Replace("?\r\n\"", "?\"\r\n")
+                        .Replace(";",";\r\n");
                 }
             }
             catch
