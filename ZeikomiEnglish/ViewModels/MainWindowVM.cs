@@ -144,6 +144,57 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
+        #region true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ
+        /// <summary>
+        /// true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ用変数
+        /// </summary>
+        bool _EngDictionaryF = false;
+        /// <summary>
+        /// true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ
+        /// </summary>
+        public bool EngDictionaryF
+        {
+            get
+            {
+                return _EngDictionaryF;
+            }
+            set
+            {
+                if (!_EngDictionaryF.Equals(value))
+                {
+                    _EngDictionaryF = value;
+                    NotifyPropertyChanged("EngDictionaryF");
+                }
+            }
+        }
+        #endregion
+
+        #region true:DeepL false:Google翻訳[DeepL_F]プロパティ
+        /// <summary>
+        /// true:DeepL false:Google翻訳[DeepL_F]プロパティ用変数
+        /// </summary>
+        bool _DeepL_F = true;
+        /// <summary>
+        /// true:DeepL false:Google翻訳[DeepL_F]プロパティ
+        /// </summary>
+        public bool DeepL_F
+        {
+            get
+            {
+                return _DeepL_F;
+            }
+            set
+            {
+                if (!_DeepL_F.Equals(value))
+                {
+                    _DeepL_F = value;
+                    NotifyPropertyChanged("DeepL_F");
+                }
+            }
+        }
+        #endregion
+
+
         #region インストールされている音声リスト[VoiceList]プロパティ
         /// <summary>
         /// インストールされている音声リスト[VoiceList]プロパティ用変数
@@ -317,12 +368,17 @@ namespace ZeikomiEnglish.ViewModels
                 // nullチェック
                 if (wnd != null)
                 {
-                    var deepl_url_base = "https://www.deepl.com/ja/translator#en/ja/{0}";   // DeepLのURL
+                    var url_base = "https://translate.google.co.jp/?sl=en&tl=ja&text={0}&op=translate";   // Google翻訳のURL
+                    if (this.DeepL_F)
+                    {
+                        url_base = "https://www.deepl.com/ja/translator#en/ja/{0}";   // DeepLのURL
+                    }
+
 
                     // nullチェック
                     if (this.PhraseItems.SelectedItem != null)
                     {
-                        string url = string.Format(deepl_url_base, this.PhraseItems.SelectedItem.Phrase);   // URL作成
+                        string url = string.Format(url_base, this.PhraseItems.SelectedItem.Phrase);   // URL作成
 
                         // nullチェック
                         if (wnd.WebView2Ctrl != null && wnd.WebView2Ctrl.CoreWebView2 != null)
@@ -355,12 +411,17 @@ namespace ZeikomiEnglish.ViewModels
                 // nullチェック
                 if (wnd != null)
                 {
-                    var googletranslate_url_base = "https://translate.google.co.jp/?sl=en&tl=ja&text={0}&op=translate";
+                    var url_base = "https://translate.google.co.jp/?sl=en&tl=ja&text={0}&op=translate";
+
+                    if (this.EngDictionaryF)
+                    {
+                        url_base = "https://dictionary.cambridge.org/dictionary/english/{0}";
+                    }
 
                     // nullチェック
                     if (this.PhraseItems.SelectedItem != null && this.PhraseItems.SelectedItem.Words.SelectedItem != null)
                     {
-                        string url = string.Format(googletranslate_url_base, this.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
+                        string url = string.Format(url_base, this.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
 
                         // nullチェック
                         if (wnd.WebView2Ctrl != null && wnd.WebView2Ctrl.CoreWebView2 != null)

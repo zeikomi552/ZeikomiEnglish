@@ -116,37 +116,51 @@
                         <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Margin="5,5,5,5" Header="Phrase">
-                        <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding PhraseItems.Items}" SelectedItem="{Binding PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="単語数" Binding="{Binding WordCount}"/>
-                                <DataGridTextColumn Header="再生回数" Binding="{Binding PlayCount}"/>
-                                <DataGridTextColumn Header="再生時間(秒)" Binding="{Binding SpeechSec, StringFormat={}{0:N3}}"/>
-                                <DataGridTextColumn Header="フレーズ" Binding="{Binding Phrase}" Width="*"/>
-                            </DataGrid.Columns>
-                            <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="MouseDoubleClick">
-                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenURL"/>
-                                </b:EventTrigger>
-                                <b:EventTrigger EventName="SelectionChanged">
-                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="SelectedItemChanged"/>
-                                </b:EventTrigger>
-                            </b:Interaction.Triggers>
-                        </DataGrid>
+                        <Grid>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,-35,0,0">
+                                <TextBlock Margin="5,0" Foreground="White" Text="Google Translate"/>
+                                <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding DeepL_F}" Cursor="Hand"/>
+                                <TextBlock Margin="5,0" Foreground="White"  Text="DeepL"/>
+                            </StackPanel>
+
+                            <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding PhraseItems.Items}" SelectedItem="{Binding PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="単語数" Binding="{Binding WordCount}"/>
+                                    <DataGridTextColumn Header="再生回数" Binding="{Binding PlayCount}"/>
+                                    <DataGridTextColumn Header="再生時間(秒)" Binding="{Binding SpeechSec, StringFormat={}{0:N3}}"/>
+                                    <DataGridTextColumn Header="フレーズ" Binding="{Binding Phrase}" Width="*"/>
+                                </DataGrid.Columns>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="MouseDoubleClick">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenURL"/>
+                                    </b:EventTrigger>
+                                    <b:EventTrigger EventName="SelectionChanged">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="SelectedItemChanged"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
                     </GroupBox>
-                    <GroupBox Margin="5" Grid.Column="1" Header="Word">
-                        <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding PhraseItems.SelectedItem.Words.Items}" 
+                    <GroupBox Margin="5" Grid.Column="1" Header=" ">
+                        <Grid>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,-35,0,0">
+                                <TextBlock Margin="5,0" Foreground="White" Text="Japanese"/>
+                                <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding EngDictionaryF}" Cursor="Hand"/>
+                                <TextBlock Margin="5,0" Foreground="White"  Text="English"/>
+                            </StackPanel>
+                            <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding PhraseItems.SelectedItem.Words.Items}" 
                               SelectedItem="{Binding PhraseItems.SelectedItem.Words.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="単語" Binding="{Binding Word}" Width="*"/>
-                            </DataGrid.Columns>
-                            <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="MouseDoubleClick">
-                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="WordDoubleClick"/>
-                                </b:EventTrigger>
-                            </b:Interaction.Triggers>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="単語" Binding="{Binding Word}" Width="*"/>
+                                </DataGrid.Columns>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="MouseDoubleClick">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="WordDoubleClick"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
 
-                        </DataGrid>
-
+                            </DataGrid>
+                        </Grid>
                     </GroupBox>
                 </Grid>
             </Grid>
@@ -160,6 +174,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Margin="5,5,5,5" FontSize="20" Text="{Binding PhraseItems.SelectedItem.Phrase}" TextWrapping="WrapWithOverflow"/>
