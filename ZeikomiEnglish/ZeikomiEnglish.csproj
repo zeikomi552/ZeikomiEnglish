@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Common\icons\favicon.ico" />
     <None Remove="Common\icons\globe.svg" />
+    <None Remove="Common\icons\save.svg" />
     <None Remove="Common\icons\SplashSchreen.png" />
     <None Remove="Common\icons\unmute.svg" />
   </ItemGroup>
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.97.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.2.5" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1418.22" />
@@ -41,6 +43,9 @@
   <ItemGroup>
     <Resource Include="Common\icons\favicon.ico" />
     <Resource Include="Common\icons\globe.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Common\icons\save.svg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Common\icons\unmute.svg">

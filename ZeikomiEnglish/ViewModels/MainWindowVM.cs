@@ -1,4 +1,6 @@
-﻿using Microsoft.Web.WebView2.WinForms;
+﻿using ClosedXML.Excel;
+using Microsoft.Web.WebView2.WinForms;
+using Microsoft.Win32;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
 using MVVMCore.Common.Wrapper;
@@ -11,6 +13,7 @@ using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ZeikomiEnglish.Common.Util;
 using ZeikomiEnglish.Models;
 
@@ -219,6 +222,57 @@ namespace ZeikomiEnglish.ViewModels
             }
         }
         #endregion
+        #region 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ
+        /// <summary>
+        /// 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ用変数
+        /// </summary>
+        double _TotalElapsedTime = 0.0;
+        /// <summary>
+        /// 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ
+        /// </summary>
+        public double TotalElapsedTime
+        {
+            get
+            {
+                return _TotalElapsedTime;
+            }
+            set
+            {
+                if (!_TotalElapsedTime.Equals(value))
+                {
+                    _TotalElapsedTime = value;
+                    NotifyPropertyChanged("TotalElapsedTime");
+                }
+            }
+        }
+        #endregion
+
+        #region 合計再生単語数[TotalWordCount]プロパティ
+        /// <summary>
+        /// 合計再生単語数[TotalWordCount]プロパティ用変数
+        /// </summary>
+        int _TotalWordCount = 0;
+        /// <summary>
+        /// 合計再生単語数[TotalWordCount]プロパティ
+        /// </summary>
+        public int TotalWordCount
+        {
+            get
+            {
+                return _TotalWordCount;
+            }
+            set
+            {
+                if (!_TotalWordCount.Equals(value))
+                {
+                    _TotalWordCount = value;
+                    NotifyPropertyChanged("TotalWordCount");
+                }
+            }
+        }
+        #endregion
+
+
 
         #region キャッシュの保存先ディレクトリ
         /// <summary>
@@ -522,9 +576,18 @@ namespace ZeikomiEnglish.ViewModels
                         
                         // オブジェクトに保存
                         var phrase_tmp = this.PhraseItems.ElementAt(index);
-                        phrase_tmp.SpeechSec = tm.TotalSeconds; // 再生時間保存
-                        phrase_tmp.PlayCount++;                 // 再生回数インクリメント
 
+                        if (tm.TotalSeconds > 0)
+                        {
+                            this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                            this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                            phrase_tmp.PlayCount++;                 // 再生回数インクリメント
+                        }
+                        else
+                        {
+                            // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
+                            this.IsPressSinglePhrase = false;
+                        }
                     }
                 });
             }
@@ -565,8 +628,17 @@ namespace ZeikomiEnglish.ViewModels
                             {
                                 // オブジェクトに保存
                                 var phrase_tmp = this.PhraseItems.ElementAt(index);
-                                phrase_tmp.SpeechSec = tm.TotalSeconds; // 再生時間保存
-                                phrase_tmp.PlayCount++;                 // 再生回数インクリメント
+                                if(tm.TotalSeconds > 0)
+                                {
+                                    this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                                    this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                                    phrase_tmp.PlayCount++;                 // 再生回数インクリメント
+                                }
+                                else
+                                {
+                                    // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
+                                    this.IsPressVoice = false;
+                                }
                             }
                             index++;
                         }
@@ -579,6 +651,84 @@ namespace ZeikomiEnglish.ViewModels
             }
             catch
             {
+            }
+        }
+        #endregion
+
+        #region レポート保存処理
+        /// <summary>
+        /// レポート保存処理
+        /// </summary>
+        public void SaveReport()
+        {
+            try
+            {
+                // ダイアログのインスタンスを生成
+                var dialog = new SaveFileDialog();
+
+                // ファイルの種類を設定
+                dialog.Filter = "エクセルファイル (*.xlsx)|*.xlsx";
+
+                // ダイアログを表示する
+                if (dialog.ShowDialog() == true)
+                {
+                    using var wb = new XLWorkbook();
+                    CreateSummarySheet(wb, "Summary");
+                    CreateDetailSheet(wb, "Detail");
+                    wb.SaveAs(dialog.FileName);
+
+                    ShowMessage.ShowNoticeOK("The report has been output.", "Information");
+                }
+
+            }
+            catch
+            {
+            }
+        }
+        #endregion
+
+        #region サマリシートの作成
+        /// <summary>
+        /// サマリシートの作成
+        /// </summary>
+        /// <param name="wb">ワークブックオブジェクト</param>
+        /// <param name="sheet_name">シート名</param>
+        private void CreateSummarySheet(XLWorkbook wb, string sheet_name)
+        {
+            var ws = wb.Worksheets.Add(sheet_name);
+            ws.Cell(1, 1).Value = "Reigstered Date";            // 登録日時
+            ws.Cell(1, 2).Value = "Total playback time(sec)";   // 合計再生時間
+            ws.Cell(1, 3).Value = "Total word count";           // 合計単語数
+
+            ws.Cell(2, 1).Value = DateTime.Now;                 // 現在時刻
+            ws.Cell(2, 2).Value = this.TotalElapsedTime;        // 合計再生時間
+            ws.Cell(2, 3).Value = this.TotalWordCount;          // 合計単語数
+        }
+        #endregion
+
+        #region 詳細シートの作成
+        /// <summary>
+        /// 詳細シートの作成
+        /// </summary>
+        /// <param name="wb">ワークブックオブジェクト</param>
+        /// <param name="sheet_name">シート名</param>
+        private void CreateDetailSheet(XLWorkbook wb, string sheet_name)
+        {
+            var ws = wb.Worksheets.Add(sheet_name);
+            ws.Cell(1, 1).Value = "Word count";                 // 単語数
+            ws.Cell(1, 2).Value = "Playback count";             // 再生回数
+            ws.Cell(1, 3).Value = "Playback time(sec)";         // 再生時間
+            ws.Cell(1, 4).Value = "Phrase";                     // フレーズ
+
+            int row = 2;
+            foreach(var tmp in this.PhraseItems.Items)
+            {
+                ws.Cell(row, 1).Value = tmp.WordCount;          // 単語数
+                ws.Cell(row, 2).Value = tmp.PlayCount;          // 再生回数
+                ws.Cell(row, 3).Value = tmp.SpeechSec;          // 再生時間
+                ws.Cell(row, 4).Value = tmp.Phrase;             // フレーズ
+
+                row++;
             }
         }
         #endregion
