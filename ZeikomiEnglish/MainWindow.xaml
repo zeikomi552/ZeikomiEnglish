@@ -8,12 +8,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         xmlns:local="clr-namespace:ZeikomiEnglish"
-        xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" xmlns:ViewModels="clr-namespace:ZeikomiEnglish.ViewModels" xmlns:b="http://schemas.microsoft.com/xaml/behaviors" x:Class="ZeikomiEnglish.MainWindow"
+        xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:ViewModels="clr-namespace:ZeikomiEnglish.ViewModels" 
+        xmlns:Converters="clr-namespace:ZeikomiEnglish.Common.Converters"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors" x:Class="ZeikomiEnglish.MainWindow"
         mc:Ignorable="d"
         Title="ZeikomiEnglish" Height="800" Width="1200">
     <mah:MetroWindow.DataContext>
         <ViewModels:MainWindowVM/>
     </mah:MetroWindow.DataContext>
+    <mah:MetroWindow.Resources>
+        <Converters:SecondToTimespanConverter x:Key="SecondToTimespanConverter"/>
+    </mah:MetroWindow.Resources>
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:CallMethodAction TargetObject="{Binding}" MethodName="Init"/>
@@ -83,7 +89,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock TextAlignment="Right" Width="130" Text="Total playback time(sec)" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding TotalElapsedTime, StringFormat={}{0:N2}}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding TotalElapsedTime, Converter={StaticResource SecondToTimespanConverter}}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock TextAlignment="Right" Width="130" Text="Total word count" VerticalAlignment="Center" Margin="5"/>
