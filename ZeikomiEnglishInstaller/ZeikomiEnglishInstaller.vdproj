@@ -50,6 +50,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -190,15 +198,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ZeikomiEnglish"
-        "ProductCode" = "8:{3DB5C4F3-3106-46CA-8B5D-8A21DCEEFE19}"
-        "PackageCode" = "8:{2EE6F853-29FB-4F0D-AB01-810897B178A1}"
+        "ProductCode" = "8:{B3AFF695-ACF8-4377-BF99-56F08508D617}"
+        "PackageCode" = "8:{E74FEAB1-8F17-4935-82F9-0FF248ADE349}"
         "UpgradeCode" = "8:{D0F215E0-73E3-4F1B-B7BB-9DC0E58B8212}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.3.0"
+        "ProductVersion" = "8:0.4.0"
         "Manufacturer" = "8:Zeikomi"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

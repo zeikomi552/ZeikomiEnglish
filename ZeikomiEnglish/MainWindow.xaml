@@ -87,7 +87,7 @@
             </StackPanel>
             <StackPanel Grid.Column="5" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="130" Text="Total playback time(sec)" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Width="130" Text="Total playback time" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock MinWidth="50" Text="{Binding TotalElapsedTime, Converter={StaticResource SecondToTimespanConverter}}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
