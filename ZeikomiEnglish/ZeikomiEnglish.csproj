@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Common\icons\favicon.ico" />
     <None Remove="Common\icons\globe.svg" />
+    <None Remove="Common\icons\recvoice.svg" />
     <None Remove="Common\icons\save.svg" />
     <None Remove="Common\icons\SplashSchreen.png" />
     <None Remove="Common\icons\unmute.svg" />
@@ -45,6 +46,7 @@
     <Resource Include="Common\icons\globe.svg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Common\icons\recvoice.svg" />
     <Resource Include="Common\icons\save.svg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
