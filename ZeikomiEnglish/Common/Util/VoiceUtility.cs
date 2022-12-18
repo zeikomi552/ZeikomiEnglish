@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
@@ -27,6 +29,34 @@ namespace ZeikomiEnglish.Common.Util
                 synthesizer.Rate = rate;
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
+                synthesizer.Speak(phrase);
+                sw.Stop();
+
+                return sw.Elapsed;
+            }
+            catch
+            {
+                return TimeSpan.Zero;
+            }
+        }
+        #endregion
+        #region フレーズを音声再生する
+        /// <summary>
+        /// フレーズを音声再生する
+        /// </summary>
+        /// <param name="phrase">フレーズ</param>
+        public static TimeSpan PhraseVoiceToFile(string phrase, string voiceinfo_name, int rate, string filepath)
+        {
+            try
+            {
+                var synthesizer = new SpeechSynthesizer();
+                var tmp = synthesizer.GetInstalledVoices();
+                synthesizer.SetOutputToDefaultAudioDevice();
+                synthesizer.SelectVoice(voiceinfo_name);
+                synthesizer.Rate = rate;
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                synthesizer.SetOutputToWaveFile(filepath);
                 synthesizer.Speak(phrase);
                 sw.Stop();
 

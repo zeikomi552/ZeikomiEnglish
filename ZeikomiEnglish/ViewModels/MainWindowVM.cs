@@ -607,7 +607,15 @@ namespace ZeikomiEnglish.ViewModels
             {
                 Task.Run(() =>
                 {
-                    int index = 0;
+                    // nullチェック
+                    if (this.PhraseItems.SelectedItem == null)
+                    {
+                        this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                    }
+
+                    // 音声再生インデックス取得
+                    int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
+
                     while (this.IsPressVoice)
                     {
                         if (this.PhraseItems.Count <= 0)
@@ -654,6 +662,56 @@ namespace ZeikomiEnglish.ViewModels
             }
         }
         #endregion
+
+        public void RecordVoice()
+        {
+            try
+            {
+                if (this.PhraseItems.Count <= 0)
+                {
+                    this.IsPressSinglePhrase = false;
+                    return;
+                }
+
+                // ダイアログのインスタンスを生成
+                var dialog = new SaveFileDialog();
+
+                // ファイルの種類を設定
+                dialog.Filter = "テキストファイル (*.wav)|*.wav";
+
+                // ダイアログを表示する
+                if (dialog.ShowDialog() == true)
+                {
+                    // nullチェック
+                    if (this.PhraseItems.SelectedItem == null)
+                    {
+                        this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                    }
+
+                    // 音声再生
+                    int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
+                    var tm = VoiceUtility.PhraseVoiceToFile(this.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate, dialog.FileName);  // フレーズ再生
+
+                    // オブジェクトに保存
+                    var phrase_tmp = this.PhraseItems.ElementAt(index);
+
+                    if (tm.TotalSeconds > 0)
+                    {
+                        this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                        this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                        phrase_tmp.PlayCount++;                 // 再生回数インクリメント
+                    }
+                    else
+                    {
+                        // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
+                        this.IsPressSinglePhrase = false;
+                    }
+                }                
+            }
+            catch
+            {
+            }
+        }
 
         #region レポート保存処理
         /// <summary>
