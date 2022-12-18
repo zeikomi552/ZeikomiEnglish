@@ -663,6 +663,10 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
+        #region 音声の録音
+        /// <summary>
+        /// 合成音声の録音
+        /// </summary>
         public void RecordVoice()
         {
             try
@@ -707,6 +711,37 @@ namespace ZeikomiEnglish.ViewModels
                         this.IsPressSinglePhrase = false;
                     }
                 }                
+            }
+            catch
+            {
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// 合成音声の録音
+        /// </summary>
+        public void RecordVoiceMulti()
+        {
+            try
+            {
+                StringBuilder text = new StringBuilder();
+                foreach(var tmp in this.PhraseItems.Items)
+                {
+                    text.AppendLine(tmp.Phrase);
+                }
+
+                // ダイアログのインスタンスを生成
+                var dialog = new SaveFileDialog();
+
+                // ファイルの種類を設定
+                dialog.Filter = "テキストファイル (*.wav)|*.wav";
+
+                // ダイアログを表示する
+                if (dialog.ShowDialog() == true)
+                {
+                    VoiceUtility.PhraseVoiceToFile(text.ToString(), this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate, dialog.FileName);  // フレーズ再生
+                }
             }
             catch
             {

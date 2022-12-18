@@ -39,6 +39,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
@@ -102,9 +103,25 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Button>
+            <Button Grid.Column="5" Margin="5" Width="80" Height="80" Cursor="Hand" Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="23.94"/>
+                    </Grid.RowDefinitions>
+                    <svgc:SvgViewbox Height="30" Width="30" Source="/Common/icons/recvoice.svg"/>
+                    <TextBlock Grid.Row="1" Text="REC All" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:CallMethodAction TargetObject="{Binding}" MethodName="RecordVoiceMulti"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Button>
 
 
-            <StackPanel Grid.Column="6" VerticalAlignment="Center">
+
+            <StackPanel Grid.Column="7" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock TextAlignment="Right" Width="130" Text="Total playback time" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
@@ -116,8 +133,7 @@
                     <TextBlock MinWidth="50" Text="{Binding TotalWordCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
             </StackPanel>
-            <Button Grid.Column="
-                    76" Margin="5" Width="80" Height="70" Cursor="Hand">
+            <Button Grid.Column="10" Margin="5" Width="80" Height="70" Cursor="Hand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
