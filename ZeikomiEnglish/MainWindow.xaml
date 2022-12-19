@@ -132,6 +132,16 @@
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock MinWidth="50" Text="{Binding TotalWordCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock TextAlignment="Right" Width="130" Text="Word Search Count" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding WordSearch}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock TextAlignment="Right" Width="130" Text="Phrase Search Count" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding PhraseSearch}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                </StackPanel>
             </StackPanel>
             <Button Grid.Column="10" Margin="5" Width="80" Height="70" Cursor="Hand">
                 <Grid>

@@ -197,7 +197,6 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
-
         #region インストールされている音声リスト[VoiceList]プロパティ
         /// <summary>
         /// インストールされている音声リスト[VoiceList]プロパティ用変数
@@ -222,6 +221,7 @@ namespace ZeikomiEnglish.ViewModels
             }
         }
         #endregion
+
         #region 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ
         /// <summary>
         /// 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ用変数
@@ -267,6 +267,56 @@ namespace ZeikomiEnglish.ViewModels
                 {
                     _TotalWordCount = value;
                     NotifyPropertyChanged("TotalWordCount");
+                }
+            }
+        }
+        #endregion
+
+        #region フレーズを調べた回数[PhraseSearch]プロパティ
+        /// <summary>
+        /// フレーズを調べた回数[PhraseSearch]プロパティ用変数
+        /// </summary>
+        int _PhraseSearch = 0;
+        /// <summary>
+        /// フレーズを調べた回数[PhraseSearch]プロパティ
+        /// </summary>
+        public int PhraseSearch
+        {
+            get
+            {
+                return _PhraseSearch;
+            }
+            set
+            {
+                if (!_PhraseSearch.Equals(value))
+                {
+                    _PhraseSearch = value;
+                    NotifyPropertyChanged("PhraseSearch");
+                }
+            }
+        }
+        #endregion
+
+        #region 単語を調べた回数[WordSearch]プロパティ
+        /// <summary>
+        /// 単語を調べた回数[WordSearch]プロパティ用変数
+        /// </summary>
+        int _WordSearch = 0;
+        /// <summary>
+        /// 単語を調べた回数[WordSearch]プロパティ
+        /// </summary>
+        public int WordSearch
+        {
+            get
+            {
+                return _WordSearch;
+            }
+            set
+            {
+                if (!_WordSearch.Equals(value))
+                {
+                    _WordSearch = value;
+                    NotifyPropertyChanged("WordSearch");
                 }
             }
         }
@@ -439,6 +489,9 @@ namespace ZeikomiEnglish.ViewModels
                         {
                             // URLを開く
                             wnd.WebView2Ctrl.CoreWebView2.Navigate(url);
+
+                            // フレーズ検索回数
+                            this.PhraseSearch++;
                         }
                     }
                 }
@@ -482,6 +535,9 @@ namespace ZeikomiEnglish.ViewModels
                         {
                             // URLを開く
                             wnd.WebView2Ctrl.CoreWebView2.Navigate(url);
+
+                            // 単語検索回数インクリメント
+                            this.WordSearch++;
                         }
                     }
                 }
@@ -792,10 +848,14 @@ namespace ZeikomiEnglish.ViewModels
             ws.Cell(1, 1).Value = "Reigstered Date";            // 登録日時
             ws.Cell(1, 2).Value = "Total playback time(sec)";   // 合計再生時間
             ws.Cell(1, 3).Value = "Total word count";           // 合計単語数
+            ws.Cell(1, 4).Value = "Word search count";          // 単語検索回数
+            ws.Cell(1, 5).Value = "Phrase search count";        // フレーズ検索回数
 
             ws.Cell(2, 1).Value = DateTime.Now;                 // 現在時刻
             ws.Cell(2, 2).Value = this.TotalElapsedTime;        // 合計再生時間
             ws.Cell(2, 3).Value = this.TotalWordCount;          // 合計単語数
+            ws.Cell(2, 4).Value = this.WordSearch;              // 単語検索回数
+            ws.Cell(2, 5).Value = this.PhraseSearch;            // フレーズ検索回数
         }
         #endregion
 
