@@ -46,80 +46,6 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
-        #region 単一フレーズの繰り返し[IsPressSinglePhrase]プロパティ
-        /// <summary>
-        /// 単一フレーズの繰り返し[IsPressSinglePhrase]プロパティ用変数
-        /// </summary>
-        bool _IsPressSinglePhrase = false;
-        /// <summary>
-        /// 単一フレーズの繰り返し[IsPressSinglePhrase]プロパティ
-        /// </summary>
-        public bool IsPressSinglePhrase
-        {
-            get
-            {
-                return _IsPressSinglePhrase;
-            }
-            set
-            {
-                if (!_IsPressSinglePhrase.Equals(value))
-                {
-                    _IsPressSinglePhrase = value;
-                    NotifyPropertyChanged("IsPressSinglePhrase");
-                }
-            }
-        }
-        #endregion
-
-        #region 音声再生命令中[IsPressVoice]プロパティ
-        /// <summary>
-        /// 音声再生命令中[IsPressVoice]プロパティ用変数
-        /// </summary>
-        bool _IsPressVoice = false;
-        /// <summary>
-        /// 音声再生命令中[IsPressVoice]プロパティ
-        /// </summary>
-        public bool IsPressVoice
-        {
-            get
-            {
-                return _IsPressVoice;
-            }
-            set
-            {
-                if (!_IsPressVoice.Equals(value))
-                {
-                    _IsPressVoice = value;
-                    NotifyPropertyChanged("IsPressVoice");
-                }
-            }
-        }
-        #endregion
-
-        #region スピーチのレート[SpeechRate]プロパティ
-        /// <summary>
-        /// スピーチのレート[SpeechRate]プロパティ用変数
-        /// </summary>
-        int _SpeechRate = 0;
-        /// <summary>
-        /// スピーチのレート[SpeechRate]プロパティ
-        /// </summary>
-        public int SpeechRate
-        {
-            get
-            {
-                return _SpeechRate;
-            }
-            set
-            {
-                if (!_SpeechRate.Equals(value))
-                {
-                    _SpeechRate = value;
-                    NotifyPropertyChanged("SpeechRate");
-                }
-            }
-        }
-        #endregion
 
         #region true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ
         /// <summary>
@@ -171,30 +97,6 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
-        #region インストールされている音声リスト[VoiceList]プロパティ
-        /// <summary>
-        /// インストールされている音声リスト[VoiceList]プロパティ用変数
-        /// </summary>
-        ModelList<InstalledVoice> _VoiceList = new ModelList<InstalledVoice>();
-        /// <summary>
-        /// インストールされている音声リスト[VoiceList]プロパティ
-        /// </summary>
-        public ModelList<InstalledVoice> VoiceList
-        {
-            get
-            {
-                return _VoiceList;
-            }
-            set
-            {
-                if (_VoiceList == null || !_VoiceList.Equals(value))
-                {
-                    _VoiceList = value;
-                    NotifyPropertyChanged("VoiceList");
-                }
-            }
-        }
-        #endregion
 
         #region キャッシュの保存先ディレクトリ
         /// <summary>
@@ -247,29 +149,29 @@ namespace ZeikomiEnglish.ViewModels
                 }
 
 
-                this.VoiceList.Items.Clear();
+                this.Story.VoiceList.Items.Clear();
                 var synthesizer = new SpeechSynthesizer();
                 var installedVoices = synthesizer.GetInstalledVoices();
 
                 foreach (var voice in installedVoices)
                 {
-                    this.VoiceList.Items.Add(voice);
+                    this.Story.VoiceList.Items.Add(voice);
                 }
 
                 // nullチェック
-                if (this.VoiceList.Items.FirstOrDefault() != null)
+                if (this.Story.VoiceList.Items.FirstOrDefault() != null)
                 {
-                    var tmp = (from x in this.VoiceList.Items
+                    var tmp = (from x in this.Story.VoiceList.Items
                                where x.VoiceInfo.Name.Contains("Zira")
                                select x).FirstOrDefault();
 
                     if (tmp == null)
                     {
-                        this.VoiceList.SelectedItem = this.VoiceList.Items.FirstOrDefault()!;
+                        this.Story.VoiceList.SelectedItem = this.Story.VoiceList.Items.FirstOrDefault()!;
                     }
                     else
                     {
-                        this.VoiceList.SelectedItem = tmp;
+                        this.Story.VoiceList.SelectedItem = tmp;
                     }
                 }
 
@@ -484,11 +386,11 @@ namespace ZeikomiEnglish.ViewModels
             {
                 Task.Run(() =>
                 {
-                    while (this.IsPressSinglePhrase)
+                    while (this.Story.IsPressSinglePhrase)
                     {
                         if (this.Story.PhraseItems.Count <= 0)
                         {
-                            this.IsPressSinglePhrase = false;
+                            this.Story.IsPressSinglePhrase = false;
                             return;
                         }
 
@@ -500,7 +402,7 @@ namespace ZeikomiEnglish.ViewModels
 
                         // 音声再生
                         int index = this.Story.PhraseItems.IndexOf(this.Story.PhraseItems.SelectedItem);
-                        var tm = RecordM.PhraseVoice(this.Story.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);  // フレーズ再生
+                        var tm = RecordM.PhraseVoice(this.Story.PhraseItems.SelectedItem!.Phrase, this.Story.VoiceList.SelectedItem.VoiceInfo.Name, this.Story.SpeechRate);  // フレーズ再生
                         
                         // オブジェクトに保存
                         var phrase_tmp = this.Story.PhraseItems.ElementAt(index);
@@ -514,7 +416,7 @@ namespace ZeikomiEnglish.ViewModels
                         else
                         {
                             // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
-                            this.IsPressSinglePhrase = false;
+                            this.Story.IsPressSinglePhrase = false;
                         }
                     }
                 });
@@ -544,11 +446,11 @@ namespace ZeikomiEnglish.ViewModels
                     // 音声再生インデックス取得
                     int index = this.Story.PhraseItems.IndexOf(this.Story.PhraseItems.SelectedItem);
 
-                    while (this.IsPressVoice)
+                    while (this.Story.IsPressVoice)
                     {
                         if (this.Story.PhraseItems.Count <= 0)
                         {
-                            this.IsPressVoice = false;
+                            this.Story.IsPressVoice = false;
                             return;
                         }
 
@@ -558,7 +460,7 @@ namespace ZeikomiEnglish.ViewModels
 
                             this.Story.PhraseItems.SelectedItem = tmp;
                             System.Threading.Thread.Sleep(100);
-                            var tm = RecordM.PhraseVoice(tmp.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);    // フレーズ再生
+                            var tm = RecordM.PhraseVoice(tmp.Phrase, this.Story.VoiceList.SelectedItem.VoiceInfo.Name, this.Story.SpeechRate);    // フレーズ再生
 
                             if (this.Story.PhraseItems.Count > index && this.Story.PhraseItems.ElementAt(index) != null)
                             {
@@ -573,7 +475,7 @@ namespace ZeikomiEnglish.ViewModels
                                 else
                                 {
                                     // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
-                                    this.IsPressVoice = false;
+                                    this.Story.IsPressVoice = false;
                                 }
                             }
                             index++;
@@ -601,7 +503,7 @@ namespace ZeikomiEnglish.ViewModels
             {
                 if (this.Story.PhraseItems.Count <= 0)
                 {
-                    this.IsPressSinglePhrase = false;
+                    this.Story.IsPressSinglePhrase = false;
                     return;
                 }
 
@@ -612,7 +514,7 @@ namespace ZeikomiEnglish.ViewModels
                 }
 
                 // 1行の録音処理
-                RecordM.RecordSingle(this.Story, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);
+                RecordM.RecordSingle(this.Story, this.Story.VoiceList.SelectedItem.VoiceInfo.Name, this.Story.SpeechRate);
             }
             catch
             {
@@ -629,7 +531,7 @@ namespace ZeikomiEnglish.ViewModels
             try
             {
                 // 複数行の合成音声の録音処理
-                RecordM.RecordVoiceMulti(this.Story, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);
+                RecordM.RecordVoiceMulti(this.Story, this.Story.VoiceList.SelectedItem.VoiceInfo.Name, this.Story.SpeechRate);
             }
             catch (Exception ex)
             {

@@ -44,7 +44,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionToggleButton}" Width="80" Height="80" Cursor="Hand" IsChecked="{Binding IsPressVoice}">
+            <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionToggleButton}" Width="80" Height="80" Cursor="Hand" IsChecked="{Binding Story.IsPressVoice}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -59,7 +59,7 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </ToggleButton>
-            <ToggleButton Grid.Column="1" Margin="5" Style="{StaticResource MaterialDesignActionToggleButton}" IsChecked="{Binding IsPressSinglePhrase}" Width="80" Height="80" Cursor="Hand">
+            <ToggleButton Grid.Column="1" Margin="5" Style="{StaticResource MaterialDesignActionToggleButton}" IsChecked="{Binding Story.IsPressSinglePhrase}" Width="80" Height="80" Cursor="Hand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -77,14 +77,14 @@
             </ToggleButton>
             <StackPanel Margin="5" VerticalAlignment="Center" Grid.Column="2">
                 <TextBlock Text="Voice Type"/>
-                <ComboBox MinWidth="100" ItemsSource="{Binding VoiceList.Items}" DisplayMemberPath="VoiceInfo.Name" SelectedItem="{Binding VoiceList.SelectedItem}"/>
+                <ComboBox MinWidth="100" ItemsSource="{Binding Story.VoiceList.Items}" DisplayMemberPath="VoiceInfo.Name" SelectedItem="{Binding Story.VoiceList.SelectedItem}"/>
             </StackPanel>
             <StackPanel Grid.Column="3" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Speed" Margin="5"/>
-                    <TextBlock Width="50" TextAlignment="Center" Text="{Binding SpeechRate}" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Width="50" TextAlignment="Center" Text="{Binding Story.SpeechRate}" VerticalAlignment="Center" Margin="5"/>
                 </StackPanel>
-                <Slider VerticalAlignment="Center" Margin="5" Value="{Binding SpeechRate}" 
+                <Slider VerticalAlignment="Center" Margin="5" Value="{Binding Story.SpeechRate}" 
                                             Minimum="-10" Maximum="10" Width="100" IsSnapToTickEnabled="True" SmallChange="1" LargeChange="1" TickFrequency="1"/>
             </StackPanel>
 
