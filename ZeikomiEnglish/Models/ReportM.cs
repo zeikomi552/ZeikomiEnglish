@@ -57,8 +57,8 @@ namespace ZeikomiEnglish.Models
             ws.Cell(2, 1).Value = DateTime.Now;                 // 現在時刻
             ws.Cell(2, 2).Value = story.TotalElapsedTime;        // 合計再生時間
             ws.Cell(2, 3).Value = story.TotalWordCount;          // 合計単語数
-            ws.Cell(2, 4).Value = story.WordSearch;              // 単語検索回数
-            ws.Cell(2, 5).Value = story.PhraseSearch;            // フレーズ検索回数
+            ws.Cell(2, 4).Value = story.WordTranslateCount;              // 単語検索回数
+            ws.Cell(2, 5).Value = story.PhraseTranslateCount;            // フレーズ検索回数
         }
         #endregion
 

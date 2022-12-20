@@ -25,7 +25,7 @@ namespace ZeikomiEnglish.ViewModels
         /// <summary>
         /// ストーリーオブジェクト[Story]プロパティ用変数
         /// </summary>
-        StoryM _Story = new StoryM();
+        StoryM _Story = new ();
         /// <summary>
         /// ストーリーオブジェクト[Story]プロパティ
         /// </summary>

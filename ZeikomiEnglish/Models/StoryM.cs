@@ -113,56 +113,56 @@ namespace ZeikomiEnglish.Models
             }
         }
         #endregion
-
-        #region フレーズを調べた回数[PhraseSearch]プロパティ
+        #region フレーズを翻訳した回数[PhraseTranslateCount]プロパティ
         /// <summary>
-        /// フレーズを調べた回数[PhraseSearch]プロパティ用変数
+        /// フレーズを翻訳した回数[PhraseTranslateCount]プロパティ用変数
         /// </summary>
-        int _PhraseSearch = 0;
+        int _PhraseTranslateCount = 0;
         /// <summary>
-        /// フレーズを調べた回数[PhraseSearch]プロパティ
+        /// フレーズを翻訳した回数[PhraseTranslateCount]プロパティ
         /// </summary>
-        public int PhraseSearch
+        public int PhraseTranslateCount
         {
             get
             {
-                return _PhraseSearch;
+                return _PhraseTranslateCount;
             }
             set
             {
-                if (!_PhraseSearch.Equals(value))
+                if (!_PhraseTranslateCount.Equals(value))
                 {
-                    _PhraseSearch = value;
-                    NotifyPropertyChanged("PhraseSearch");
+                    _PhraseTranslateCount = value;
+                    NotifyPropertyChanged("PhraseTranslateCount");
                 }
             }
         }
         #endregion
 
-        #region 単語を調べた回数[WordSearch]プロパティ
+        #region 単語を翻訳した回数[WordTranslateCount]プロパティ
         /// <summary>
-        /// 単語を調べた回数[WordSearch]プロパティ用変数
+        /// 単語を翻訳した回数[WordTranslateCount]プロパティ用変数
         /// </summary>
-        int _WordSearch = 0;
+        int _WordTranslateCount = 0;
         /// <summary>
-        /// 単語を調べた回数[WordSearch]プロパティ
+        /// 単語を翻訳した回数[WordTranslateCount]プロパティ
         /// </summary>
-        public int WordSearch
+        public int WordTranslateCount
         {
             get
             {
-                return _WordSearch;
+                return _WordTranslateCount;
             }
             set
             {
-                if (!_WordSearch.Equals(value))
+                if (!_WordTranslateCount.Equals(value))
                 {
-                    _WordSearch = value;
-                    NotifyPropertyChanged("WordSearch");
+                    _WordTranslateCount = value;
+                    NotifyPropertyChanged("WordTranslateCount");
                 }
             }
         }
         #endregion
+
 
 
         #region 単一フレーズの繰り返し[IsPressSinglePhrase]プロパティ
@@ -481,7 +481,7 @@ namespace ZeikomiEnglish.Models
                     wv2.CoreWebView2.Navigate(url);
 
                     // フレーズ検索回数
-                    this.PhraseSearch++;
+                    this.PhraseTranslateCount++;
                 }
             }
         }
@@ -513,7 +513,7 @@ namespace ZeikomiEnglish.Models
                     wv2.CoreWebView2.Navigate(url);
 
                     // 単語検索回数インクリメント
-                    this.WordSearch++;
+                    this.WordTranslateCount++;
                 }
             }
         }
