@@ -482,6 +482,9 @@ namespace ZeikomiEnglish.Models
 
                     // フレーズ検索回数
                     this.PhraseTranslateCount++;
+
+                    // 個別フレーズ翻訳回数のインクリメント
+                    this.PhraseItems.SelectedItem.TranslateCount++;
                 }
             }
         }
@@ -514,6 +517,9 @@ namespace ZeikomiEnglish.Models
 
                     // 単語検索回数インクリメント
                     this.WordTranslateCount++;
+
+                    // 個別単語翻訳回数のインクリメント
+                    this.PhraseItems.SelectedItem.Words.SelectedItem.TranslateCount++;
                 }
             }
         }

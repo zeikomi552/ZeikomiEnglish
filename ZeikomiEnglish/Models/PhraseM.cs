@@ -63,6 +63,31 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
+        #region 翻訳した回数[TranslateCount]プロパティ
+        /// <summary>
+        /// 翻訳した回数[TranslateCount]プロパティ用変数
+        /// </summary>
+        int _TranslateCount = 0;
+        /// <summary>
+        /// 翻訳した回数[TranslateCount]プロパティ
+        /// </summary>
+        public int TranslateCount
+        {
+            get
+            {
+                return _TranslateCount;
+            }
+            set
+            {
+                if (!_TranslateCount.Equals(value))
+                {
+                    _TranslateCount = value;
+                    NotifyPropertyChanged("TranslateCount");
+                }
+            }
+        }
+        #endregion
+
         #region 単語数
         /// <summary>
         /// 単語数
