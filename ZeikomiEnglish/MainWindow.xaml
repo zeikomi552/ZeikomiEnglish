@@ -212,7 +212,7 @@
                         <Grid>
                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,-35,0,0">
                                 <TextBlock Margin="5,0" Foreground="White" Text="Google Translate"/>
-                                <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding DeepL_F}" Cursor="Hand"/>
+                                <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding Story.DeepL_F}" Cursor="Hand"/>
                                 <TextBlock Margin="5,0" Foreground="White"  Text="DeepL"/>
                             </StackPanel>
 
@@ -239,7 +239,7 @@
                         <Grid>
                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,-35,0,0">
                                 <TextBlock Margin="5,0" Foreground="White" Text="Japanese"/>
-                                <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding EngDictionaryF}" Cursor="Hand"/>
+                                <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding Story.EngDictionaryF}" Cursor="Hand"/>
                                 <TextBlock Margin="5,0" Foreground="White"  Text="English"/>
                             </StackPanel>
                             <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding Story.PhraseItems.SelectedItem.Words.Items}" 

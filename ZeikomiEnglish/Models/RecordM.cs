@@ -75,7 +75,6 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
-
         #region フレーズを音声再生する
         /// <summary>
         /// フレーズを音声再生する
@@ -103,6 +102,7 @@ namespace ZeikomiEnglish.Models
             }
         }
         #endregion
+
         #region フレーズを音声再生する
         /// <summary>
         /// フレーズを音声再生する

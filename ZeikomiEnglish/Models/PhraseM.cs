@@ -31,7 +31,7 @@ namespace ZeikomiEnglish.Models
                 {
                     _Phrase = value;
                     NotifyPropertyChanged("Phrase");
-                    SelectionChanged();
+                    WordSplit();
                 }
             }
         }
@@ -151,14 +151,21 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
-        #region 選択の変更
+        #region 単語で分割
         /// <summary>
-        /// 選択の変更
+        /// 単語で分割
         /// </summary>
-        public void SelectionChanged()
+        public void WordSplit()
         {
             this.Words.Items.Clear();
-            var tmp = this.Phrase.Split(" ");
+            var tmp = this.Phrase.Replace(",", " ")
+                    .Replace("\\", " ")
+                    .Replace(".", " ")
+                    .Replace("\"", " ")
+                    .Replace(";", " ")
+                    .Replace("?", " ")
+                    .Split(" ");
+
             foreach (var word in tmp)
             {
                 // 空文字なら飛ばす
