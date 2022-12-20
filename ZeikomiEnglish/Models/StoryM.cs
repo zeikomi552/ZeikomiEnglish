@@ -1,5 +1,7 @@
-﻿using MVVMCore.BaseClass;
+﻿using Microsoft.Web.WebView2.WinForms;
+using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
+using MVVMCore.Common.Wrapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -238,6 +240,56 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
+        #region true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ
+        /// <summary>
+        /// true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ用変数
+        /// </summary>
+        bool _EngDictionaryF = false;
+        /// <summary>
+        /// true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ
+        /// </summary>
+        public bool EngDictionaryF
+        {
+            get
+            {
+                return _EngDictionaryF;
+            }
+            set
+            {
+                if (!_EngDictionaryF.Equals(value))
+                {
+                    _EngDictionaryF = value;
+                    NotifyPropertyChanged("EngDictionaryF");
+                }
+            }
+        }
+        #endregion
+
+        #region true:DeepL false:Google翻訳[DeepL_F]プロパティ
+        /// <summary>
+        /// true:DeepL false:Google翻訳[DeepL_F]プロパティ用変数
+        /// </summary>
+        bool _DeepL_F = true;
+        /// <summary>
+        /// true:DeepL false:Google翻訳[DeepL_F]プロパティ
+        /// </summary>
+        public bool DeepL_F
+        {
+            get
+            {
+                return _DeepL_F;
+            }
+            set
+            {
+                if (!_DeepL_F.Equals(value))
+                {
+                    _DeepL_F = value;
+                    NotifyPropertyChanged("DeepL_F");
+                }
+            }
+        }
+        #endregion
+
         #region インストールされている音声リスト[VoiceList]プロパティ
         /// <summary>
         /// インストールされている音声リスト[VoiceList]プロパティ用変数
@@ -258,6 +310,40 @@ namespace ZeikomiEnglish.Models
                 {
                     _VoiceList = value;
                     NotifyPropertyChanged("VoiceList");
+                }
+            }
+        }
+        #endregion
+
+        #region 合成音声の初期化処理
+        /// <summary>
+        /// 合成音声の初期化処理
+        /// </summary>
+        public void InitVoice()
+        {
+            this.VoiceList.Items.Clear();
+            var synthesizer = new SpeechSynthesizer();
+            var installedVoices = synthesizer.GetInstalledVoices();
+
+            foreach (var voice in installedVoices)
+            {
+                this.VoiceList.Items.Add(voice);
+            }
+
+            // nullチェック
+            if (this.VoiceList.Items.FirstOrDefault() != null)
+            {
+                var tmp = (from x in this.VoiceList.Items
+                           where x.VoiceInfo.Name.Contains("Zira")
+                           select x).FirstOrDefault();
+
+                if (tmp == null)
+                {
+                    this.VoiceList.SelectedItem = this.VoiceList.Items.FirstOrDefault()!;
+                }
+                else
+                {
+                    this.VoiceList.SelectedItem = tmp;
                 }
             }
         }
@@ -376,6 +462,71 @@ namespace ZeikomiEnglish.Models
             }
             catch
             {
+            }
+        }
+        #endregion
+
+
+        #region フレーズの翻訳
+        /// <summary>
+        /// フレーズの翻訳
+        /// </summary>
+        /// <param name="wv2">WebView2コントロール</param>
+        public void TranslatePhrase(Microsoft.Web.WebView2.Wpf.WebView2 wv2)
+        {
+            var url_base = "https://translate.google.co.jp/?sl=en&tl=ja&text={0}&op=translate";   // Google翻訳のURL
+            if (this.DeepL_F)
+            {
+                url_base = "https://www.deepl.com/ja/translator#en/ja/{0}";   // DeepLのURL
+            }
+
+
+            // nullチェック
+            if (this.PhraseItems.SelectedItem != null)
+            {
+                string url = string.Format(url_base, this.PhraseItems.SelectedItem.Phrase);   // URL作成
+
+                // nullチェック
+                if (wv2 != null && wv2.CoreWebView2 != null)
+                {
+                    // URLを開く
+                    wv2.CoreWebView2.Navigate(url);
+
+                    // フレーズ検索回数
+                    this.PhraseSearch++;
+                }
+            }
+        }
+        #endregion
+
+        #region 単語の検索
+        /// <summary>
+        /// 単語の検索
+        /// </summary>
+        /// <param name="wv2">WebView2コントロール</param>
+        public void TranslateWord(Microsoft.Web.WebView2.Wpf.WebView2 wv2)
+        {
+            var url_base = "https://translate.google.co.jp/?sl=en&tl=ja&text={0}&op=translate";
+
+            if (this.EngDictionaryF)
+            {
+                url_base = "https://dictionary.cambridge.org/dictionary/english/{0}";
+            }
+
+            // nullチェック
+            if (this.PhraseItems.SelectedItem != null && this.PhraseItems.SelectedItem.Words.SelectedItem != null)
+            {
+                string url = string.Format(url_base, this.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
+
+                // nullチェック
+                if (wv2 != null && wv2.CoreWebView2 != null)
+                {
+                    // URLを開く
+                    wv2.CoreWebView2.Navigate(url);
+
+                    // 単語検索回数インクリメント
+                    this.WordSearch++;
+                }
             }
         }
         #endregion

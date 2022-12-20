@@ -46,58 +46,6 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
-
-        #region true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ
-        /// <summary>
-        /// true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ用変数
-        /// </summary>
-        bool _EngDictionaryF = false;
-        /// <summary>
-        /// true:英英辞典 false:Google翻訳[EngDictionaryF]プロパティ
-        /// </summary>
-        public bool EngDictionaryF
-        {
-            get
-            {
-                return _EngDictionaryF;
-            }
-            set
-            {
-                if (!_EngDictionaryF.Equals(value))
-                {
-                    _EngDictionaryF = value;
-                    NotifyPropertyChanged("EngDictionaryF");
-                }
-            }
-        }
-        #endregion
-
-        #region true:DeepL false:Google翻訳[DeepL_F]プロパティ
-        /// <summary>
-        /// true:DeepL false:Google翻訳[DeepL_F]プロパティ用変数
-        /// </summary>
-        bool _DeepL_F = true;
-        /// <summary>
-        /// true:DeepL false:Google翻訳[DeepL_F]プロパティ
-        /// </summary>
-        public bool DeepL_F
-        {
-            get
-            {
-                return _DeepL_F;
-            }
-            set
-            {
-                if (!_DeepL_F.Equals(value))
-                {
-                    _DeepL_F = value;
-                    NotifyPropertyChanged("DeepL_F");
-                }
-            }
-        }
-        #endregion
-
-
         #region キャッシュの保存先ディレクトリ
         /// <summary>
         /// キャッシュの保存先ディレクトリ
@@ -111,16 +59,23 @@ namespace ZeikomiEnglish.ViewModels
         /// </summary>
         private async void InitializeAsync(MainWindow wnd)
         {
-            var browserExecutableFolder = Path.Combine(MVVMCore.Common.Utilities.PathManager.GetApplicationFolder(), _WebViewDir);
+            try
+            {
+                var browserExecutableFolder = Path.Combine(MVVMCore.Common.Utilities.PathManager.GetApplicationFolder(), _WebViewDir);
 
-            // カレントディレクトリの作成
-            MVVMCore.Common.Utilities.PathManager.CreateDirectory(browserExecutableFolder);
+                // カレントディレクトリの作成
+                MVVMCore.Common.Utilities.PathManager.CreateDirectory(browserExecutableFolder);
 
-            // 環境の作成
-            var webView2Environment = await Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(null, browserExecutableFolder);
+                // 環境の作成
+                var webView2Environment = await Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(null, browserExecutableFolder);
 
-            // 固定バージョンのブラウザを配布
-            await wnd.WebView2Ctrl.EnsureCoreWebView2Async(webView2Environment);
+                // 固定バージョンのブラウザを配布
+                await wnd.WebView2Ctrl.EnsureCoreWebView2Async(webView2Environment);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
         }
         #endregion
 
@@ -148,33 +103,8 @@ namespace ZeikomiEnglish.ViewModels
                     }
                 }
 
-
-                this.Story.VoiceList.Items.Clear();
-                var synthesizer = new SpeechSynthesizer();
-                var installedVoices = synthesizer.GetInstalledVoices();
-
-                foreach (var voice in installedVoices)
-                {
-                    this.Story.VoiceList.Items.Add(voice);
-                }
-
-                // nullチェック
-                if (this.Story.VoiceList.Items.FirstOrDefault() != null)
-                {
-                    var tmp = (from x in this.Story.VoiceList.Items
-                               where x.VoiceInfo.Name.Contains("Zira")
-                               select x).FirstOrDefault();
-
-                    if (tmp == null)
-                    {
-                        this.Story.VoiceList.SelectedItem = this.Story.VoiceList.Items.FirstOrDefault()!;
-                    }
-                    else
-                    {
-                        this.Story.VoiceList.SelectedItem = tmp;
-                    }
-                }
-
+                // 合成音声の初期化
+                this.Story.InitVoice();
             }
             catch (Exception ex)
             {
@@ -246,32 +176,12 @@ namespace ZeikomiEnglish.ViewModels
                 // nullチェック
                 if (wnd != null)
                 {
-                    var url_base = "https://translate.google.co.jp/?sl=en&tl=ja&text={0}&op=translate";   // Google翻訳のURL
-                    if (this.DeepL_F)
-                    {
-                        url_base = "https://www.deepl.com/ja/translator#en/ja/{0}";   // DeepLのURL
-                    }
-
-
-                    // nullチェック
-                    if (this.Story.PhraseItems.SelectedItem != null)
-                    {
-                        string url = string.Format(url_base, this.Story.PhraseItems.SelectedItem.Phrase);   // URL作成
-
-                        // nullチェック
-                        if (wnd.WebView2Ctrl != null && wnd.WebView2Ctrl.CoreWebView2 != null)
-                        {
-                            // URLを開く
-                            wnd.WebView2Ctrl.CoreWebView2.Navigate(url);
-
-                            // フレーズ検索回数
-                            this.Story.PhraseSearch++;
-                        }
-                    }
+                    this.Story.TranslatePhrase(wnd.WebView2Ctrl);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -292,32 +202,12 @@ namespace ZeikomiEnglish.ViewModels
                 // nullチェック
                 if (wnd != null)
                 {
-                    var url_base = "https://translate.google.co.jp/?sl=en&tl=ja&text={0}&op=translate";
-
-                    if (this.EngDictionaryF)
-                    {
-                        url_base = "https://dictionary.cambridge.org/dictionary/english/{0}";
-                    }
-
-                    // nullチェック
-                    if (this.Story.PhraseItems.SelectedItem != null && this.Story.PhraseItems.SelectedItem.Words.SelectedItem != null)
-                    {
-                        string url = string.Format(url_base, this.Story.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
-
-                        // nullチェック
-                        if (wnd.WebView2Ctrl != null && wnd.WebView2Ctrl.CoreWebView2 != null)
-                        {
-                            // URLを開く
-                            wnd.WebView2Ctrl.CoreWebView2.Navigate(url);
-
-                            // 単語検索回数インクリメント
-                            this.Story.WordSearch++;
-                        }
-                    }
+                    this.Story.TranslateWord(wnd.WebView2Ctrl);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -343,9 +233,9 @@ namespace ZeikomiEnglish.ViewModels
                         .Replace(";",";\r\n");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -369,9 +259,9 @@ namespace ZeikomiEnglish.ViewModels
                     ScrollbarUtility.TopRow(wnd.phrase_dg);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -384,45 +274,11 @@ namespace ZeikomiEnglish.ViewModels
         {
             try
             {
-                Task.Run(() =>
-                {
-                    while (this.Story.IsPressSinglePhrase)
-                    {
-                        if (this.Story.PhraseItems.Count <= 0)
-                        {
-                            this.Story.IsPressSinglePhrase = false;
-                            return;
-                        }
-
-                        // nullチェック
-                        if (this.Story.PhraseItems.SelectedItem == null)
-                        {
-                            this.Story.PhraseItems.SelectedItem = this.Story.PhraseItems.First();
-                        }
-
-                        // 音声再生
-                        int index = this.Story.PhraseItems.IndexOf(this.Story.PhraseItems.SelectedItem);
-                        var tm = RecordM.PhraseVoice(this.Story.PhraseItems.SelectedItem!.Phrase, this.Story.VoiceList.SelectedItem.VoiceInfo.Name, this.Story.SpeechRate);  // フレーズ再生
-                        
-                        // オブジェクトに保存
-                        var phrase_tmp = this.Story.PhraseItems.ElementAt(index);
-
-                        if (tm.TotalSeconds > 0)
-                        {
-                            this.Story.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                            this.Story.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
-                            phrase_tmp.PlayCount++;                 // 再生回数インクリメント
-                        }
-                        else
-                        {
-                            // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
-                            this.Story.IsPressSinglePhrase = false;
-                        }
-                    }
-                });
+                this.Story.PhraseVoiceSingle();
             }
-            catch
+            catch (Exception ex)
             {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -435,60 +291,11 @@ namespace ZeikomiEnglish.ViewModels
         {
             try
             {
-                Task.Run(() =>
-                {
-                    // nullチェック
-                    if (this.Story.PhraseItems.SelectedItem == null)
-                    {
-                        this.Story.PhraseItems.SelectedItem = this.Story.PhraseItems.First();
-                    }
-
-                    // 音声再生インデックス取得
-                    int index = this.Story.PhraseItems.IndexOf(this.Story.PhraseItems.SelectedItem);
-
-                    while (this.Story.IsPressVoice)
-                    {
-                        if (this.Story.PhraseItems.Count <= 0)
-                        {
-                            this.Story.IsPressVoice = false;
-                            return;
-                        }
-
-                        if (index < this.Story.PhraseItems.Count)
-                        {
-                            var tmp = this.Story.PhraseItems.ElementAt(index);
-
-                            this.Story.PhraseItems.SelectedItem = tmp;
-                            System.Threading.Thread.Sleep(100);
-                            var tm = RecordM.PhraseVoice(tmp.Phrase, this.Story.VoiceList.SelectedItem.VoiceInfo.Name, this.Story.SpeechRate);    // フレーズ再生
-
-                            if (this.Story.PhraseItems.Count > index && this.Story.PhraseItems.ElementAt(index) != null)
-                            {
-                                // オブジェクトに保存
-                                var phrase_tmp = this.Story.PhraseItems.ElementAt(index);
-                                if(tm.TotalSeconds > 0)
-                                {
-                                    this.Story.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                                    this.Story.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
-                                    phrase_tmp.PlayCount++;                 // 再生回数インクリメント
-                                }
-                                else
-                                {
-                                    // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
-                                    this.Story.IsPressVoice = false;
-                                }
-                            }
-                            index++;
-                        }
-                        else
-                        {
-                            index = 0;
-                        }
-                    }
-                });
+                this.Story.PhraseVoiceMulti();
             }
-            catch
+            catch (Exception ex)
             {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -516,8 +323,9 @@ namespace ZeikomiEnglish.ViewModels
                 // 1行の録音処理
                 RecordM.RecordSingle(this.Story, this.Story.VoiceList.SelectedItem.VoiceInfo.Name, this.Story.SpeechRate);
             }
-            catch
+            catch (Exception ex)
             {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
