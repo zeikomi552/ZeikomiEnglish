@@ -138,24 +138,14 @@ namespace ZeikomiEnglish.ViewModels
         /// </summary>
         public void TextChanged()
         {
-            // フレーズに分解する
-            var list = this.Story.Text.Replace("\r", "").Split("\n");
-
-            // フレーズリストをクリア
-            this.Story.PhraseItems.Items.Clear();
-
-            // リスト数まわす
-            foreach (var tmp in list)
+            try
             {
-                if (tmp.Trim().Length > 0)
-                {
-                    // フレーズリストに追加
-                    this.Story.PhraseItems.Items.Add(new PhraseM()
-                    {
-                        Phrase = tmp.Trim()
-                    }
-                    );
-                }
+                // フレーズリストの更新
+                this.Story.RefreshPhraseList();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -220,18 +210,8 @@ namespace ZeikomiEnglish.ViewModels
         {
             try
             {
-                if (this.Story.Text != null)
-                {
-                    this.Story.Text = this.Story.Text.Replace("\r", "")
-                        .Replace("\n", "")
-                        .Replace(".", ".\r\n")
-                        .Replace("!", "!\r\n")
-                        .Replace("?", "?\r\n")
-                        .Replace(".\r\n\"", ".\"\r\n")
-                        .Replace("!\r\n\"", "!\"\r\n")
-                        .Replace("?\r\n\"", "?\"\r\n")
-                        .Replace(";",";\r\n");
-                }
+                // 文章の整形
+                this.Story.PeriodLineBreak();
             }
             catch (Exception ex)
             {

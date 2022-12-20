@@ -355,48 +355,42 @@ namespace ZeikomiEnglish.Models
         /// </summary>
         public void PhraseVoiceSingle()
         {
-            try
+            Task.Run(() =>
             {
-                Task.Run(() =>
+                while (this.IsPressSinglePhrase)
                 {
-                    while (this.IsPressSinglePhrase)
+                    if (this.PhraseItems.Count <= 0)
                     {
-                        if (this.PhraseItems.Count <= 0)
-                        {
-                            this.IsPressSinglePhrase = false;
-                            return;
-                        }
-
-                        // nullチェック
-                        if (this.PhraseItems.SelectedItem == null)
-                        {
-                            this.PhraseItems.SelectedItem = this.PhraseItems.First();
-                        }
-
-                        // 音声再生
-                        int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
-                        var tm = RecordM.PhraseVoice(this.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);  // フレーズ再生
-
-                        // オブジェクトに保存
-                        var phrase_tmp = this.PhraseItems.ElementAt(index);
-
-                        if (tm.TotalSeconds > 0)
-                        {
-                            this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                            this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
-                            phrase_tmp.PlayCount++;                 // 再生回数インクリメント
-                        }
-                        else
-                        {
-                            // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
-                            this.IsPressSinglePhrase = false;
-                        }
+                        this.IsPressSinglePhrase = false;
+                        return;
                     }
-                });
-            }
-            catch
-            {
-            }
+
+                    // nullチェック
+                    if (this.PhraseItems.SelectedItem == null)
+                    {
+                        this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                    }
+
+                    // 音声再生
+                    int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
+                    var tm = RecordM.PhraseVoice(this.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);  // フレーズ再生
+
+                    // オブジェクトに保存
+                    var phrase_tmp = this.PhraseItems.ElementAt(index);
+
+                    if (tm.TotalSeconds > 0)
+                    {
+                        this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                        this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                        phrase_tmp.PlayCount++;                 // 再生回数インクリメント
+                    }
+                    else
+                    {
+                        // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
+                        this.IsPressSinglePhrase = false;
+                    }
+                }
+            });
         }
         #endregion
 
@@ -406,63 +400,57 @@ namespace ZeikomiEnglish.Models
         /// </summary>
         public void PhraseVoiceMulti()
         {
-            try
+            Task.Run(() =>
             {
-                Task.Run(() =>
+                // nullチェック
+                if (this.PhraseItems.SelectedItem == null)
                 {
-                    // nullチェック
-                    if (this.PhraseItems.SelectedItem == null)
+                    this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                }
+
+                // 音声再生インデックス取得
+                int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
+
+                while (this.IsPressVoice)
+                {
+                    if (this.PhraseItems.Count <= 0)
                     {
-                        this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                        this.IsPressVoice = false;
+                        return;
                     }
 
-                    // 音声再生インデックス取得
-                    int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
-
-                    while (this.IsPressVoice)
+                    if (index < this.PhraseItems.Count)
                     {
-                        if (this.PhraseItems.Count <= 0)
+                        var tmp = this.PhraseItems.ElementAt(index);
+
+                        this.PhraseItems.SelectedItem = tmp;
+                        System.Threading.Thread.Sleep(100);
+                        var tm = RecordM.PhraseVoice(tmp.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);    // フレーズ再生
+
+                        if (this.PhraseItems.Count > index && this.PhraseItems.ElementAt(index) != null)
                         {
-                            this.IsPressVoice = false;
-                            return;
-                        }
-
-                        if (index < this.PhraseItems.Count)
-                        {
-                            var tmp = this.PhraseItems.ElementAt(index);
-
-                            this.PhraseItems.SelectedItem = tmp;
-                            System.Threading.Thread.Sleep(100);
-                            var tm = RecordM.PhraseVoice(tmp.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);    // フレーズ再生
-
-                            if (this.PhraseItems.Count > index && this.PhraseItems.ElementAt(index) != null)
+                            // オブジェクトに保存
+                            var phrase_tmp = this.PhraseItems.ElementAt(index);
+                            if (tm.TotalSeconds > 0)
                             {
-                                // オブジェクトに保存
-                                var phrase_tmp = this.PhraseItems.ElementAt(index);
-                                if (tm.TotalSeconds > 0)
-                                {
-                                    this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                                    this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
-                                    phrase_tmp.PlayCount++;                 // 再生回数インクリメント
-                                }
-                                else
-                                {
-                                    // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
-                                    this.IsPressVoice = false;
-                                }
+                                this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                                this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                                phrase_tmp.PlayCount++;                 // 再生回数インクリメント
                             }
-                            index++;
+                            else
+                            {
+                                // 再生時間が0(スリープに入ってしまった可能性がある)ため抜ける
+                                this.IsPressVoice = false;
+                            }
                         }
-                        else
-                        {
-                            index = 0;
-                        }
+                        index++;
                     }
-                });
-            }
-            catch
-            {
-            }
+                    else
+                    {
+                        index = 0;
+                    }
+                }
+            });
         }
         #endregion
 
@@ -527,6 +515,55 @@ namespace ZeikomiEnglish.Models
                     // 単語検索回数インクリメント
                     this.WordSearch++;
                 }
+            }
+        }
+        #endregion
+
+        #region フレーズリストの更新
+        /// <summary>
+        /// フレーズリストの更新
+        /// </summary>
+        public void RefreshPhraseList()
+        {
+            // フレーズに分解する
+            var list = this.Text.Replace("\r", "").Split("\n");
+
+            // フレーズリストをクリア
+            this.PhraseItems.Items.Clear();
+
+            // リスト数まわす
+            foreach (var tmp in list)
+            {
+                if (tmp.Trim().Length > 0)
+                {
+                    // フレーズリストに追加
+                    this.PhraseItems.Items.Add(new PhraseM()
+                    {
+                        Phrase = tmp.Trim()
+                    }
+                    );
+                }
+            }
+        }
+        #endregion
+
+        #region 文章の整形処理
+        /// <summary>
+        /// 文章の整形処理
+        /// </summary>
+        public void PeriodLineBreak()
+        {
+            if (this.Text != null)
+            {
+                this.Text = this.Text.Replace("\r", "")
+                    .Replace("\n", "")
+                    .Replace(".", ".\r\n")
+                    .Replace("!", "!\r\n")
+                    .Replace("?", "?\r\n")
+                    .Replace(".\r\n\"", ".\"\r\n")
+                    .Replace("!\r\n\"", "!\"\r\n")
+                    .Replace("?\r\n\"", "?\"\r\n")
+                    .Replace(";", ";\r\n");
             }
         }
         #endregion
