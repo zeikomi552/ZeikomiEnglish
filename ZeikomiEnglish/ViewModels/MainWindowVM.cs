@@ -21,6 +21,30 @@ namespace ZeikomiEnglish.ViewModels
 {
     public class MainWindowVM : ViewModelBase
     {
+        #region ストーリーオブジェクト[Story]プロパティ
+        /// <summary>
+        /// ストーリーオブジェクト[Story]プロパティ用変数
+        /// </summary>
+        StoryM _Story = new StoryM();
+        /// <summary>
+        /// ストーリーオブジェクト[Story]プロパティ
+        /// </summary>
+        public StoryM Story
+        {
+            get
+            {
+                return _Story;
+            }
+            set
+            {
+                if (_Story == null || !_Story.Equals(value))
+                {
+                    _Story = value;
+                    NotifyPropertyChanged("Story");
+                }
+            }
+        }
+        #endregion
 
         #region 単一フレーズの繰り返し[IsPressSinglePhrase]プロパティ
         /// <summary>
@@ -92,56 +116,6 @@ namespace ZeikomiEnglish.ViewModels
                 {
                     _SpeechRate = value;
                     NotifyPropertyChanged("SpeechRate");
-                }
-            }
-        }
-        #endregion
-
-        #region フレーズ要素[PhraseItems]プロパティ
-        /// <summary>
-        /// フレーズ要素[PhraseItems]プロパティ用変数
-        /// </summary>
-        ModelList<PhraseM> _PhraseItems = new ModelList<PhraseM>();
-        /// <summary>
-        /// フレーズ要素[PhraseItems]プロパティ
-        /// </summary>
-        public ModelList<PhraseM> PhraseItems
-        {
-            get
-            {
-                return _PhraseItems;
-            }
-            set
-            {
-                if (_PhraseItems == null || !_PhraseItems.Equals(value))
-                {
-                    _PhraseItems = value;
-                    NotifyPropertyChanged("PhraseItems");
-                }
-            }
-        }
-        #endregion
-
-        #region テキスト[Text]プロパティ
-        /// <summary>
-        /// テキスト[Text]プロパティ用変数
-        /// </summary>
-        string _Text = string.Empty;
-        /// <summary>
-        /// テキスト[Text]プロパティ
-        /// </summary>
-        public string Text
-        {
-            get
-            {
-                return _Text;
-            }
-            set
-            {
-                if (_Text == null || !_Text.Equals(value))
-                {
-                    _Text = value;
-                    NotifyPropertyChanged("Text");
                 }
             }
         }
@@ -221,108 +195,6 @@ namespace ZeikomiEnglish.ViewModels
             }
         }
         #endregion
-
-        #region 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ
-        /// <summary>
-        /// 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ用変数
-        /// </summary>
-        double _TotalElapsedTime = 0.0;
-        /// <summary>
-        /// 経過時間（再生時間のみ）[TotalElapsedTime]プロパティ
-        /// </summary>
-        public double TotalElapsedTime
-        {
-            get
-            {
-                return _TotalElapsedTime;
-            }
-            set
-            {
-                if (!_TotalElapsedTime.Equals(value))
-                {
-                    _TotalElapsedTime = value;
-                    NotifyPropertyChanged("TotalElapsedTime");
-                }
-            }
-        }
-        #endregion
-
-        #region 合計再生単語数[TotalWordCount]プロパティ
-        /// <summary>
-        /// 合計再生単語数[TotalWordCount]プロパティ用変数
-        /// </summary>
-        int _TotalWordCount = 0;
-        /// <summary>
-        /// 合計再生単語数[TotalWordCount]プロパティ
-        /// </summary>
-        public int TotalWordCount
-        {
-            get
-            {
-                return _TotalWordCount;
-            }
-            set
-            {
-                if (!_TotalWordCount.Equals(value))
-                {
-                    _TotalWordCount = value;
-                    NotifyPropertyChanged("TotalWordCount");
-                }
-            }
-        }
-        #endregion
-
-        #region フレーズを調べた回数[PhraseSearch]プロパティ
-        /// <summary>
-        /// フレーズを調べた回数[PhraseSearch]プロパティ用変数
-        /// </summary>
-        int _PhraseSearch = 0;
-        /// <summary>
-        /// フレーズを調べた回数[PhraseSearch]プロパティ
-        /// </summary>
-        public int PhraseSearch
-        {
-            get
-            {
-                return _PhraseSearch;
-            }
-            set
-            {
-                if (!_PhraseSearch.Equals(value))
-                {
-                    _PhraseSearch = value;
-                    NotifyPropertyChanged("PhraseSearch");
-                }
-            }
-        }
-        #endregion
-
-        #region 単語を調べた回数[WordSearch]プロパティ
-        /// <summary>
-        /// 単語を調べた回数[WordSearch]プロパティ用変数
-        /// </summary>
-        int _WordSearch = 0;
-        /// <summary>
-        /// 単語を調べた回数[WordSearch]プロパティ
-        /// </summary>
-        public int WordSearch
-        {
-            get
-            {
-                return _WordSearch;
-            }
-            set
-            {
-                if (!_WordSearch.Equals(value))
-                {
-                    _WordSearch = value;
-                    NotifyPropertyChanged("WordSearch");
-                }
-            }
-        }
-        #endregion
-
-
 
         #region キャッシュの保存先ディレクトリ
         /// <summary>
@@ -435,10 +307,10 @@ namespace ZeikomiEnglish.ViewModels
         public void TextChanged()
         {
             // フレーズに分解する
-            var list = this.Text.Replace("\r", "").Split("\n");
+            var list = this.Story.Text.Replace("\r", "").Split("\n");
 
             // フレーズリストをクリア
-            this.PhraseItems.Items.Clear();
+            this.Story.PhraseItems.Items.Clear();
 
             // リスト数まわす
             foreach (var tmp in list)
@@ -446,7 +318,7 @@ namespace ZeikomiEnglish.ViewModels
                 if (tmp.Trim().Length > 0)
                 {
                     // フレーズリストに追加
-                    this.PhraseItems.Items.Add(new PhraseM()
+                    this.Story.PhraseItems.Items.Add(new PhraseM()
                     {
                         Phrase = tmp.Trim()
                     }
@@ -480,9 +352,9 @@ namespace ZeikomiEnglish.ViewModels
 
 
                     // nullチェック
-                    if (this.PhraseItems.SelectedItem != null)
+                    if (this.Story.PhraseItems.SelectedItem != null)
                     {
-                        string url = string.Format(url_base, this.PhraseItems.SelectedItem.Phrase);   // URL作成
+                        string url = string.Format(url_base, this.Story.PhraseItems.SelectedItem.Phrase);   // URL作成
 
                         // nullチェック
                         if (wnd.WebView2Ctrl != null && wnd.WebView2Ctrl.CoreWebView2 != null)
@@ -491,7 +363,7 @@ namespace ZeikomiEnglish.ViewModels
                             wnd.WebView2Ctrl.CoreWebView2.Navigate(url);
 
                             // フレーズ検索回数
-                            this.PhraseSearch++;
+                            this.Story.PhraseSearch++;
                         }
                     }
                 }
@@ -526,9 +398,9 @@ namespace ZeikomiEnglish.ViewModels
                     }
 
                     // nullチェック
-                    if (this.PhraseItems.SelectedItem != null && this.PhraseItems.SelectedItem.Words.SelectedItem != null)
+                    if (this.Story.PhraseItems.SelectedItem != null && this.Story.PhraseItems.SelectedItem.Words.SelectedItem != null)
                     {
-                        string url = string.Format(url_base, this.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
+                        string url = string.Format(url_base, this.Story.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
 
                         // nullチェック
                         if (wnd.WebView2Ctrl != null && wnd.WebView2Ctrl.CoreWebView2 != null)
@@ -537,7 +409,7 @@ namespace ZeikomiEnglish.ViewModels
                             wnd.WebView2Ctrl.CoreWebView2.Navigate(url);
 
                             // 単語検索回数インクリメント
-                            this.WordSearch++;
+                            this.Story.WordSearch++;
                         }
                     }
                 }
@@ -556,9 +428,9 @@ namespace ZeikomiEnglish.ViewModels
         {
             try
             {
-                if (this.Text != null)
+                if (this.Story.Text != null)
                 {
-                    this.Text = this.Text.Replace("\r", "")
+                    this.Story.Text = this.Story.Text.Replace("\r", "")
                         .Replace("\n", "")
                         .Replace(".", ".\r\n")
                         .Replace("!", "!\r\n")
@@ -614,29 +486,29 @@ namespace ZeikomiEnglish.ViewModels
                 {
                     while (this.IsPressSinglePhrase)
                     {
-                        if (this.PhraseItems.Count <= 0)
+                        if (this.Story.PhraseItems.Count <= 0)
                         {
                             this.IsPressSinglePhrase = false;
                             return;
                         }
 
                         // nullチェック
-                        if (this.PhraseItems.SelectedItem == null)
+                        if (this.Story.PhraseItems.SelectedItem == null)
                         {
-                            this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                            this.Story.PhraseItems.SelectedItem = this.Story.PhraseItems.First();
                         }
 
                         // 音声再生
-                        int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
-                        var tm = VoiceUtility.PhraseVoice(this.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);  // フレーズ再生
+                        int index = this.Story.PhraseItems.IndexOf(this.Story.PhraseItems.SelectedItem);
+                        var tm = VoiceUtility.PhraseVoice(this.Story.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);  // フレーズ再生
                         
                         // オブジェクトに保存
-                        var phrase_tmp = this.PhraseItems.ElementAt(index);
+                        var phrase_tmp = this.Story.PhraseItems.ElementAt(index);
 
                         if (tm.TotalSeconds > 0)
                         {
-                            this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                            this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                            this.Story.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                            this.Story.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
                             phrase_tmp.PlayCount++;                 // 再生回数インクリメント
                         }
                         else
@@ -664,38 +536,38 @@ namespace ZeikomiEnglish.ViewModels
                 Task.Run(() =>
                 {
                     // nullチェック
-                    if (this.PhraseItems.SelectedItem == null)
+                    if (this.Story.PhraseItems.SelectedItem == null)
                     {
-                        this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                        this.Story.PhraseItems.SelectedItem = this.Story.PhraseItems.First();
                     }
 
                     // 音声再生インデックス取得
-                    int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
+                    int index = this.Story.PhraseItems.IndexOf(this.Story.PhraseItems.SelectedItem);
 
                     while (this.IsPressVoice)
                     {
-                        if (this.PhraseItems.Count <= 0)
+                        if (this.Story.PhraseItems.Count <= 0)
                         {
                             this.IsPressVoice = false;
                             return;
                         }
 
-                        if (index < this.PhraseItems.Count)
+                        if (index < this.Story.PhraseItems.Count)
                         {
-                            var tmp = this.PhraseItems.ElementAt(index);
+                            var tmp = this.Story.PhraseItems.ElementAt(index);
 
-                            this.PhraseItems.SelectedItem = tmp;
+                            this.Story.PhraseItems.SelectedItem = tmp;
                             System.Threading.Thread.Sleep(100);
                             var tm = VoiceUtility.PhraseVoice(tmp.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate);    // フレーズ再生
 
-                            if (this.PhraseItems.Count > index && this.PhraseItems.ElementAt(index) != null)
+                            if (this.Story.PhraseItems.Count > index && this.Story.PhraseItems.ElementAt(index) != null)
                             {
                                 // オブジェクトに保存
-                                var phrase_tmp = this.PhraseItems.ElementAt(index);
+                                var phrase_tmp = this.Story.PhraseItems.ElementAt(index);
                                 if(tm.TotalSeconds > 0)
                                 {
-                                    this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                                    this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                                    this.Story.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                                    this.Story.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
                                     phrase_tmp.PlayCount++;                 // 再生回数インクリメント
                                 }
                                 else
@@ -727,7 +599,7 @@ namespace ZeikomiEnglish.ViewModels
         {
             try
             {
-                if (this.PhraseItems.Count <= 0)
+                if (this.Story.PhraseItems.Count <= 0)
                 {
                     this.IsPressSinglePhrase = false;
                     return;
@@ -743,22 +615,22 @@ namespace ZeikomiEnglish.ViewModels
                 if (dialog.ShowDialog() == true)
                 {
                     // nullチェック
-                    if (this.PhraseItems.SelectedItem == null)
+                    if (this.Story.PhraseItems.SelectedItem == null)
                     {
-                        this.PhraseItems.SelectedItem = this.PhraseItems.First();
+                        this.Story.PhraseItems.SelectedItem = this.Story.PhraseItems.First();
                     }
 
                     // 音声再生
-                    int index = this.PhraseItems.IndexOf(this.PhraseItems.SelectedItem);
-                    var tm = VoiceUtility.PhraseVoiceToFile(this.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate, dialog.FileName);  // フレーズ再生
+                    int index = this.Story.PhraseItems.IndexOf(this.Story.PhraseItems.SelectedItem);
+                    var tm = VoiceUtility.PhraseVoiceToFile(this.Story.PhraseItems.SelectedItem!.Phrase, this.VoiceList.SelectedItem.VoiceInfo.Name, this.SpeechRate, dialog.FileName);  // フレーズ再生
 
                     // オブジェクトに保存
-                    var phrase_tmp = this.PhraseItems.ElementAt(index);
+                    var phrase_tmp = this.Story.PhraseItems.ElementAt(index);
 
                     if (tm.TotalSeconds > 0)
                     {
-                        this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                        this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                        this.Story.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
+                        this.Story.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
                         phrase_tmp.PlayCount++;                 // 再生回数インクリメント
                     }
                     else
@@ -774,6 +646,7 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
+        #region 合成音声の録音
         /// <summary>
         /// 合成音声の録音
         /// </summary>
@@ -782,7 +655,7 @@ namespace ZeikomiEnglish.ViewModels
             try
             {
                 StringBuilder text = new StringBuilder();
-                foreach(var tmp in this.PhraseItems.Items)
+                foreach(var tmp in this.Story.PhraseItems.Items)
                 {
                     text.AppendLine(tmp.Phrase);
                 }
@@ -803,6 +676,7 @@ namespace ZeikomiEnglish.ViewModels
             {
             }
         }
+        #endregion
 
         #region レポート保存処理
         /// <summary>
@@ -852,10 +726,10 @@ namespace ZeikomiEnglish.ViewModels
             ws.Cell(1, 5).Value = "Phrase search count";        // フレーズ検索回数
 
             ws.Cell(2, 1).Value = DateTime.Now;                 // 現在時刻
-            ws.Cell(2, 2).Value = this.TotalElapsedTime;        // 合計再生時間
-            ws.Cell(2, 3).Value = this.TotalWordCount;          // 合計単語数
-            ws.Cell(2, 4).Value = this.WordSearch;              // 単語検索回数
-            ws.Cell(2, 5).Value = this.PhraseSearch;            // フレーズ検索回数
+            ws.Cell(2, 2).Value = this.Story.TotalElapsedTime;        // 合計再生時間
+            ws.Cell(2, 3).Value = this.Story.TotalWordCount;          // 合計単語数
+            ws.Cell(2, 4).Value = this.Story.WordSearch;              // 単語検索回数
+            ws.Cell(2, 5).Value = this.Story.PhraseSearch;            // フレーズ検索回数
         }
         #endregion
 
@@ -874,7 +748,7 @@ namespace ZeikomiEnglish.ViewModels
             ws.Cell(1, 4).Value = "Phrase";                     // フレーズ
 
             int row = 2;
-            foreach(var tmp in this.PhraseItems.Items)
+            foreach(var tmp in this.Story.PhraseItems.Items)
             {
                 ws.Cell(row, 1).Value = tmp.WordCount;          // 単語数
                 ws.Cell(row, 2).Value = tmp.PlayCount;          // 再生回数

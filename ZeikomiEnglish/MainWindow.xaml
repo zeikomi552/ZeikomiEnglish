@@ -125,22 +125,22 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock TextAlignment="Right" Width="130" Text="Total playback time" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding TotalElapsedTime, Converter={StaticResource SecondToTimespanConverter}}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding Story.TotalElapsedTime, Converter={StaticResource SecondToTimespanConverter}}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock TextAlignment="Right" Width="130" Text="Total word count" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding TotalWordCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding Story.TotalWordCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock TextAlignment="Right" Width="130" Text="Word Search Count" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding WordSearch}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding Story.WordSearch}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock TextAlignment="Right" Width="130" Text="Phrase Search Count" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding PhraseSearch}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding Story.PhraseSearch}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
             </StackPanel>
             <Button Grid.Column="10" Margin="5" Width="80" Height="70" Cursor="Hand">
@@ -179,7 +179,7 @@
                         </Grid.RowDefinitions>
                         <TextBox materialDesign:HintAssist.Hint="Please Enter English"
                                      mah:TextBoxHelper.ClearTextButton="True"
-                                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Story.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      TextWrapping="WrapWithOverflow">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="TextChanged">
@@ -216,7 +216,8 @@
                                 <TextBlock Margin="5,0" Foreground="White"  Text="DeepL"/>
                             </StackPanel>
 
-                            <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding PhraseItems.Items}" SelectedItem="{Binding PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Story.PhraseItems.Items}"
+                                      SelectedItem="{Binding Story.PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Word Count" Binding="{Binding WordCount}"/>
                                     <DataGridTextColumn Header="PlayBack Count" Binding="{Binding PlayCount}"/>
@@ -241,8 +242,8 @@
                                 <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding EngDictionaryF}" Cursor="Hand"/>
                                 <TextBlock Margin="5,0" Foreground="White"  Text="English"/>
                             </StackPanel>
-                            <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding PhraseItems.SelectedItem.Words.Items}" 
-                              SelectedItem="{Binding PhraseItems.SelectedItem.Words.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding Story.PhraseItems.SelectedItem.Words.Items}" 
+                              SelectedItem="{Binding Story.PhraseItems.SelectedItem.Words.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Word" Binding="{Binding Word}" Width="*"/>
                                 </DataGrid.Columns>
@@ -270,7 +271,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Margin="5,5,5,5" FontSize="20" Text="{Binding PhraseItems.SelectedItem.Phrase}" TextWrapping="WrapWithOverflow"/>
+                <TextBlock Margin="5,5,5,5" FontSize="20" Text="{Binding Story.PhraseItems.SelectedItem.Phrase}" TextWrapping="WrapWithOverflow"/>
                 <Button Margin="5" Grid.Column="1" Cursor="Hand">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="Click">
