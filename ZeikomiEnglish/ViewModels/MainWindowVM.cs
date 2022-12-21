@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using Microsoft.Web.WebView2.WinForms;
 using Microsoft.Win32;
 using MVVMCore.BaseClass;
@@ -14,6 +15,8 @@ using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using ZeikomiEnglish.Common.Util;
 using ZeikomiEnglish.Models;
 
@@ -234,7 +237,7 @@ namespace ZeikomiEnglish.ViewModels
                 var wnd = VisualTreeHelperWrapper.GetWindow<MainWindow>(sender) as MainWindow;
 
                 // ウィンドウが取得できた場合
-                if (wnd != null)
+                if (wnd != null && this.Story.PhraseItems.SelectedItem != null)
                 {
                     ScrollbarUtility.TopRow(wnd.phrase_dg);
                 }
@@ -344,5 +347,111 @@ namespace ZeikomiEnglish.ViewModels
             }
         }
         #endregion
+
+        #region キー入力処理の受付
+        /// <summary>
+        /// キー入力処理の受付
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void KeyDown(object sender, EventArgs e)
+        {
+            try
+            {
+                var wnd = sender as MainWindow;
+
+                if (wnd != null)
+                {
+                    var key_eve = e as KeyEventArgs;
+
+                    if (key_eve!.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || key_eve!.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                    {
+                        switch (key_eve.Key)
+                        {
+                            case Key.Left:
+                                {
+                                    if (this.Story.PhraseItems.Count > 0)
+                                    {
+                                        var targetGrid = wnd.phrase_dg;
+
+                                        // 未選択状態なので1行目を選択する
+                                        if (this.Story.PhraseItems.SelectedItem == null)
+                                        {
+                                            targetGrid.SelectedIndex = 0;
+                                        }
+
+                                        // 最初のセルを取得
+                                        var cellInfo = targetGrid.SelectedCells.FirstOrDefault();
+
+                                        // フォーカスのセット
+                                        targetGrid.Focus();
+
+                                        // カレントセルのセット
+                                        targetGrid.CurrentCell = new DataGridCellInfo();
+                                        targetGrid.CurrentCell = cellInfo;
+                                    }
+                                    break;
+                                }
+                            case Key.Right:
+                                {
+                                    if (this.Story.PhraseItems.SelectedItem != null
+                                        && this.Story.PhraseItems.SelectedItem.Words.Items.Count > 0)
+                                    {
+                                        var targetGrid = wnd.word_dg;
+
+                                        // 行が選択されていない場合最初の行を選択
+                                        if (this.Story.PhraseItems.SelectedItem.Words.SelectedItem == null)
+                                        {
+                                            targetGrid.SelectedIndex = 0;
+                                        }
+
+                                        // 最初のセルを取得
+                                        var cellInfo = targetGrid.SelectedCells.FirstOrDefault();
+
+                                        // フォーカスをセット
+                                        targetGrid.Focus();
+
+                                        // カレントセルのセット
+                                        targetGrid.CurrentCell = new DataGridCellInfo();
+                                        targetGrid.CurrentCell = cellInfo;
+                                    }
+                                    break;
+                                }
+
+                        }
+                    }
+
+                    switch (key_eve.Key)
+                    {
+                        case Key.Enter:
+                            {
+                                var active = FocusManager.GetFocusedElement(wnd);
+
+                                if (active is DataGridCell)
+                                {
+                                    var tmp = ((DataGridCell)active).DataContext as WordM;
+
+                                    if (tmp != null)
+                                    {
+                                        this.Story.TranslateWord(wnd.WebView2Ctrl);
+                                    }
+                                    else
+                                    {
+                                        this.Story.TranslatePhrase(wnd.WebView2Ctrl);
+                                    }
+                                }
+                                key_eve.Handled = true;
+                                break;
+                            }
+                    }
+                }
+            }
+            catch (Exception ev)
+            {
+                ShowMessage.ShowErrorOK(ev.Message, "Error");
+            }
+        }
+        #endregion
+
     }
 }

@@ -24,6 +24,9 @@
         <b:EventTrigger EventName="Loaded">
             <b:CallMethodAction TargetObject="{Binding}" MethodName="Init"/>
         </b:EventTrigger>
+        <b:EventTrigger EventName="PreviewKeyDown">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="KeyDown"/>
+        </b:EventTrigger>
     </b:Interaction.Triggers>
 
     <Grid>
@@ -123,22 +126,22 @@
 
             <StackPanel Grid.Column="7" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="130" Text="Total playback time" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Width="150" Text="Total playback time" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock MinWidth="50" Text="{Binding Story.TotalElapsedTime, Converter={StaticResource SecondToTimespanConverter}}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="130" Text="Total word count" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Width="150" Text="Total word count" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock MinWidth="50" Text="{Binding Story.TotalWordCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="130" Text="Word Search Count" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Width="150" Text="Total word translate Count" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock MinWidth="50" Text="{Binding Story.WordTranslateCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="130" Text="Phrase Search Count" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Width="150" Text="Total phrase translate Count" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock MinWidth="50" Text="{Binding Story.PhraseTranslateCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
@@ -242,7 +245,7 @@
                                 <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding Story.EngDictionaryF}" Cursor="Hand"/>
                                 <TextBlock Margin="5,0" Foreground="White"  Text="English"/>
                             </StackPanel>
-                            <DataGrid IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding Story.PhraseItems.SelectedItem.Words.Items}" 
+                            <DataGrid x:Name="word_dg" IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding Story.PhraseItems.SelectedItem.Words.Items}" 
                               SelectedItem="{Binding Story.PhraseItems.SelectedItem.Words.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Word" Binding="{Binding Word}" Width="*"/>
