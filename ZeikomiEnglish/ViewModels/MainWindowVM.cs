@@ -439,8 +439,9 @@ namespace ZeikomiEnglish.ViewModels
                                     {
                                         this.Story.TranslatePhrase(wnd.WebView2Ctrl);
                                     }
+
+                                    key_eve.Handled = true; // キー入力解除
                                 }
-                                key_eve.Handled = true;
                                 break;
                             }
                     }
