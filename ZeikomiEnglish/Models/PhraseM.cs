@@ -92,7 +92,7 @@ namespace ZeikomiEnglish.Models
         /// <summary>
         /// 単語数
         /// </summary>
-        public int WordCount
+        public int PlayBackWordCount
         {
             get
             {

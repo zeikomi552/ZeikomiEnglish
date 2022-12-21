@@ -131,19 +131,9 @@
                     <TextBlock MinWidth="50" Text="{Binding Story.TotalElapsedTime, Converter={StaticResource SecondToTimespanConverter}}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="150" Text="Total word count" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock TextAlignment="Right" Width="150" Text="Total playback word count" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding Story.TotalWordCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="150" Text="Total word translate Count" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding Story.WordTranslateCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock TextAlignment="Right" Width="150" Text="Total phrase translate Count" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock TextAlignment="Right" Text=":" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock MinWidth="50" Text="{Binding Story.PhraseTranslateCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
+                    <TextBlock MinWidth="50" Text="{Binding Story.TotalPlaybackWordCount}" VerticalAlignment="Center" TextAlignment="Center" Margin="5"/>
                 </StackPanel>
             </StackPanel>
             <Button Grid.Column="10" Margin="5" Width="80" Height="70" Cursor="Hand">
@@ -201,7 +191,6 @@
                                         <b:CallMethodAction TargetObject="{Binding}" MethodName="PeriodLineBreak"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
-
                             </Button>
                         </Grid>
                     </Grid>
@@ -222,7 +211,7 @@
                             <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Story.PhraseItems.Items}"
                                       SelectedItem="{Binding Story.PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Word Count" Binding="{Binding WordCount}"/>
+                                    <DataGridTextColumn Header="Word Count" Binding="{Binding PlayBackWordCount}"/>
                                     <DataGridTextColumn Header="PlayBack Count" Binding="{Binding PlayCount}"/>
                                     <DataGridTextColumn Header="Time(sec)" Binding="{Binding SpeechSec, StringFormat={}{0:N3}}"/>
                                     <DataGridTextColumn Header="Phrase" Binding="{Binding Phrase}" Width="*"/>

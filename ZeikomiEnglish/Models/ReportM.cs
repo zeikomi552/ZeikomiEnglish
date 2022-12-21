@@ -52,15 +52,17 @@ namespace ZeikomiEnglish.Models
             var ws = wb.Worksheets.Add(sheet_name);
             ws.Cell(1, 1).Value = "Reigstered Date";                    // 登録日時
             ws.Cell(1, 2).Value = "Total playback time(sec)";           // 合計再生時間
-            ws.Cell(1, 3).Value = "Total word count";                   // 合計単語数
+            ws.Cell(1, 3).Value = "Total playback word count";          // 合計再生単語数
             ws.Cell(1, 4).Value = "Total word translate count";         // 単語検索回数
             ws.Cell(1, 5).Value = "Total phrase translate count";       // フレーズ検索回数
+            ws.Cell(1, 6).Value = "Total word count";                   // 合計単語数
 
             ws.Cell(2, 1).Value = DateTime.Now;                         // 現在時刻
             ws.Cell(2, 2).Value = story.TotalElapsedTime;               // 合計再生時間
-            ws.Cell(2, 3).Value = story.TotalWordCount;                 // 合計単語数
+            ws.Cell(2, 3).Value = story.TotalPlaybackWordCount;         // 合計単語数
             ws.Cell(2, 4).Value = story.WordTranslateCount;             // 単語検索回数
             ws.Cell(2, 5).Value = story.PhraseTranslateCount;           // フレーズ検索回数
+            ws.Cell(2, 6).Value = story.TotalWordCount;                 // 合計単語数
         }
         #endregion
 
@@ -83,7 +85,7 @@ namespace ZeikomiEnglish.Models
             int row = 2;
             foreach (var tmp in story.PhraseItems.Items)
             {
-                ws.Cell(row, 1).Value = tmp.WordCount;          // 単語数
+                ws.Cell(row, 1).Value = tmp.PlayBackWordCount;          // 単語数
                 ws.Cell(row, 2).Value = tmp.PlayCount;          // 再生回数
                 ws.Cell(row, 3).Value = tmp.SpeechSec;          // 再生時間
                 ws.Cell(row, 4).Value = tmp.Phrase;             // フレーズ

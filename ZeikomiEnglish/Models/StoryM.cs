@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.WebView2.WinForms;
+﻿using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using Microsoft.Web.WebView2.WinForms;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
 using MVVMCore.Common.Wrapper;
@@ -89,30 +90,32 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
-        #region 合計再生単語数[TotalWordCount]プロパティ
+        #region 合計再生単語数[TotalPlaybackWordCount]プロパティ
         /// <summary>
-        /// 合計再生単語数[TotalWordCount]プロパティ用変数
+        /// 合計再生単語数[TotalPlaybackWordCount]プロパティ用変数
         /// </summary>
-        int _TotalWordCount = 0;
+        int _TotalPlaybackWordCount = 0;
         /// <summary>
-        /// 合計再生単語数[TotalWordCount]プロパティ
+        /// 合計再生単語数[TotalPlaybackWordCount]プロパティ
         /// </summary>
-        public int TotalWordCount
+        public int TotalPlaybackWordCount
         {
             get
             {
-                return _TotalWordCount;
+                return _TotalPlaybackWordCount;
             }
             set
             {
-                if (!_TotalWordCount.Equals(value))
+                if (!_TotalPlaybackWordCount.Equals(value))
                 {
-                    _TotalWordCount = value;
-                    NotifyPropertyChanged("TotalWordCount");
+                    _TotalPlaybackWordCount = value;
+                    NotifyPropertyChanged("TotalPlaybackWordCount");
                 }
             }
         }
         #endregion
+
+
         #region フレーズを翻訳した回数[PhraseTranslateCount]プロパティ
         /// <summary>
         /// フレーズを翻訳した回数[PhraseTranslateCount]プロパティ用変数
@@ -163,7 +166,30 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
-
+        #region 単語数[TotalWordCount]プロパティ
+        /// <summary>
+        /// 単語数[TotalWordCount]プロパティ用変数
+        /// </summary>
+        int _TotalWordCount = 0;
+        /// <summary>
+        /// 単語数[TotalWordCount]プロパティ
+        /// </summary>
+        public int TotalWordCount
+        {
+            get
+            {
+                return _TotalWordCount;
+            }
+            set
+            {
+                if (!_TotalWordCount.Equals(value))
+                {
+                    _TotalWordCount = value;
+                    NotifyPropertyChanged("TotalWordCount");
+                }
+            }
+        }
+        #endregion
 
         #region 単一フレーズの繰り返し[IsPressSinglePhrase]プロパティ
         /// <summary>
@@ -381,7 +407,7 @@ namespace ZeikomiEnglish.Models
                     if (tm.TotalSeconds > 0)
                     {
                         this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                        this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                        this.TotalPlaybackWordCount += phrase_tmp.PlayBackWordCount;                // 合計再生単語数
                         phrase_tmp.PlayCount++;                 // 再生回数インクリメント
                     }
                     else
@@ -434,7 +460,7 @@ namespace ZeikomiEnglish.Models
                             if (tm.TotalSeconds > 0)
                             {
                                 this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                                this.TotalWordCount += phrase_tmp.WordCount;                        // 合計再生単語数
+                                this.TotalPlaybackWordCount += phrase_tmp.PlayBackWordCount;                        // 合計再生単語数
                                 phrase_tmp.PlayCount++;                 // 再生回数インクリメント
                             }
                             else
@@ -550,6 +576,32 @@ namespace ZeikomiEnglish.Models
                     );
                 }
             }
+
+            // 合計単語数のセット
+            this.TotalWordCount = GetTotalWordCount();
+
+        }
+        #endregion
+
+        #region 合計単語数の取得
+        /// <summary>
+        /// 合計単語数の取得
+        /// </summary>
+        /// <returns>合計単語数</returns>
+        private int GetTotalWordCount()
+        {
+            List<WordM> word_list = new List<WordM>();
+            // リスト数まわす
+            foreach (var tmp in this.PhraseItems.Items)
+            {
+                word_list.AddRange(tmp.Words.Items.ToList());
+            }
+
+            // 合計単語数の取得
+            return (from x in word_list
+                    select x.Word.ToLower())
+                            .Distinct()
+                            .Count();
         }
         #endregion
 
