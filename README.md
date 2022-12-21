@@ -25,6 +25,7 @@ https://www.youtube.com/embed/kTKoU2P7Qec
 - Microsoft Visual Studio Community 2022 (64 ビット)
 - .NET 6.0
 - Windows 11
+- Microsoft Excel
 
 ## インストール
 
@@ -45,5 +46,6 @@ TOEIC高得点取得に向け勉強中(TOEIC580点)
 アプリケーションの不具合や感想、TOEIC勉強法のアドバイスなど何かあればコメントいただけるとうれしいです
 
 HP:https://www.premium-tsubu-hero.net/
+
 Twitter:https://twitter.com/Zeikomi552
 
