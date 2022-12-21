@@ -110,13 +110,14 @@ namespace ZeikomiEnglish.Models
             {
                 foreach (var word in phrase.Words.Items)
                 {
-                    if (word_list.ContainsKey(word.Word))
+                    var key = word.Word.ToLower();
+                    if (word_list.ContainsKey(key))
                     {
-                        word_list[word.Word] += word.TranslateCount;
+                        word_list[key] += word.TranslateCount;
                     }
                     else
                     {
-                        word_list.Add(word.Word, word.TranslateCount);
+                        word_list.Add(key, word.TranslateCount);
                     }
                 }
             }
@@ -126,7 +127,7 @@ namespace ZeikomiEnglish.Models
 
             var ws = wb.Worksheets.Add(sheet_name);
             ws.Cell(1, 1).Value = "Word";                 // 単語
-            ws.Cell(1, 2).Value = "Translate count";      // 翻訳回数
+            ws.Cell(1, 2).Value = "Word translate count";      // 翻訳回数
 
             int row = 2;
             foreach (var item in sort_dic)
