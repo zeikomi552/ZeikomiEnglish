@@ -55,14 +55,16 @@ namespace ZeikomiEnglish.Models
             ws.Cell(1, 3).Value = "Total playback word count";          // 合計再生単語数
             ws.Cell(1, 4).Value = "Total word translate count";         // 単語検索回数
             ws.Cell(1, 5).Value = "Total phrase translate count";       // フレーズ検索回数
-            ws.Cell(1, 6).Value = "Total word count";                   // 合計単語数
+            ws.Cell(1, 6).Value = "Unique word count";                 // 合計単語数(ユニーク)
+            ws.Cell(1, 7).Value = "Unique word translate count";       // 合計翻訳単語数(ユニーク)
 
             ws.Cell(2, 1).Value = DateTime.Now;                         // 現在時刻
             ws.Cell(2, 2).Value = story.TotalElapsedTime;               // 合計再生時間
             ws.Cell(2, 3).Value = story.TotalPlaybackWordCount;         // 合計単語数
             ws.Cell(2, 4).Value = story.WordTranslateCount;             // 単語検索回数
             ws.Cell(2, 5).Value = story.PhraseTranslateCount;           // フレーズ検索回数
-            ws.Cell(2, 6).Value = story.TotalWordCount;                 // 合計単語数
+            ws.Cell(2, 6).Value = story.UniqueWordCount;                // 合計単語数(ユニーク)
+            ws.Cell(2, 7).Value = story.GetUniqueWordTranslateCount();  // 合計翻訳単語数(ユニーク)
         }
         #endregion
 
@@ -81,6 +83,7 @@ namespace ZeikomiEnglish.Models
             ws.Cell(1, 3).Value = "Playback time(sec)";         // 再生時間
             ws.Cell(1, 4).Value = "Phrase";                     // フレーズ
             ws.Cell(1, 5).Value = "Phrase translate count";     // 翻訳回数
+            ws.Cell(1, 6).Value = "Word translate count";       // 翻訳単語数
 
             int row = 2;
             foreach (var tmp in story.PhraseItems.Items)
@@ -90,6 +93,7 @@ namespace ZeikomiEnglish.Models
                 ws.Cell(row, 3).Value = tmp.SpeechSec;          // 再生時間
                 ws.Cell(row, 4).Value = tmp.Phrase;             // フレーズ
                 ws.Cell(row, 5).Value = tmp.TranslateCount;     // 翻訳回数
+                ws.Cell(row, 6).Value = (from x in tmp.Words.Items where x.TranslateCount > 0 select x).Count();    // 翻訳単語数
 
                 row++;
             }

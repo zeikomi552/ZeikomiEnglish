@@ -166,26 +166,26 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
-        #region 単語数[TotalWordCount]プロパティ
+        #region 単語数[UniqueWordCount]プロパティ
         /// <summary>
-        /// 単語数[TotalWordCount]プロパティ用変数
+        /// 単語数[UniqueWordCount]プロパティ用変数
         /// </summary>
-        int _TotalWordCount = 0;
+        int _UniqueWordCount = 0;
         /// <summary>
-        /// 単語数[TotalWordCount]プロパティ
+        /// 単語数[UniqueWordCount]プロパティ
         /// </summary>
-        public int TotalWordCount
+        public int UniqueWordCount
         {
             get
             {
-                return _TotalWordCount;
+                return _UniqueWordCount;
             }
             set
             {
-                if (!_TotalWordCount.Equals(value))
+                if (!_UniqueWordCount.Equals(value))
                 {
-                    _TotalWordCount = value;
-                    NotifyPropertyChanged("TotalWordCount");
+                    _UniqueWordCount = value;
+                    NotifyPropertyChanged("UniqueWordCount");
                 }
             }
         }
@@ -578,7 +578,7 @@ namespace ZeikomiEnglish.Models
             }
 
             // 合計単語数のセット
-            this.TotalWordCount = GetTotalWordCount();
+            this.UniqueWordCount = GetUniqueWordCount();
 
         }
         #endregion
@@ -588,7 +588,7 @@ namespace ZeikomiEnglish.Models
         /// 合計単語数の取得
         /// </summary>
         /// <returns>合計単語数</returns>
-        private int GetTotalWordCount()
+        private int GetUniqueWordCount()
         {
             List<WordM> word_list = new List<WordM>();
             // リスト数まわす
@@ -599,6 +599,29 @@ namespace ZeikomiEnglish.Models
 
             // 合計単語数の取得
             return (from x in word_list
+                    select x.Word.ToLower())
+                            .Distinct()
+                            .Count();
+        }
+        #endregion
+
+        #region 単語翻訳回数（ユニーク）
+        /// <summary>
+        /// 単語翻訳回数（ユニーク）の取得関数
+        /// </summary>
+        /// <returns>単語翻訳回数（ユニーク）</returns>
+        public int GetUniqueWordTranslateCount()
+        {
+            List<WordM> word_list = new List<WordM>();
+            // リスト数まわす
+            foreach (var tmp in this.PhraseItems.Items)
+            {
+                word_list.AddRange(tmp.Words.Items.ToList());
+            }
+
+            // 合計単語数の取得
+            return (from x in word_list
+                    where x.TranslateCount > 0
                     select x.Word.ToLower())
                             .Distinct()
                             .Count();
