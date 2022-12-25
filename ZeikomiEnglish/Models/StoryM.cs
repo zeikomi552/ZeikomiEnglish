@@ -628,6 +628,19 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
+        #region 翻訳した文の数（ユニーク）を取得する関数
+        /// <summary>
+        /// 翻訳した文の数（ユニーク）を取得する関数
+        /// </summary>
+        /// <returns>翻訳した文の数（ユニーク）</returns>
+        public int GetUniqPhraseTranslateCount()
+        {
+            return (from x in this.PhraseItems.Items
+                       where x.TranslateCount > 0
+                       select x).Count();
+        }
+        #endregion
+
         #region 文章の整形処理
         /// <summary>
         /// 文章の整形処理
