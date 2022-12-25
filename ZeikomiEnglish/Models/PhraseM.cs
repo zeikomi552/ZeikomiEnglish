@@ -163,6 +163,7 @@ namespace ZeikomiEnglish.Models
                     .Replace(".", " ")
                     .Replace("\"", " ")
                     .Replace(";", " ")
+                    .Replace(":", " ")
                     .Replace("?", " ")
                     .Split(" ");
 
