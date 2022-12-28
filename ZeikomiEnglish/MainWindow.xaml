@@ -219,7 +219,7 @@
                                 <TextBlock Margin="5,0" Foreground="White"  Text="DeepL"/>
                             </StackPanel>
 
-                            <DataGrid CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Story.PhraseItems.Items}"
+                            <DataGrid SelectionMode="Single" CanUserSortColumns="False" x:Name="phrase_dg" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Story.PhraseItems.Items}"
                                       SelectedItem="{Binding Story.PhraseItems.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Word Count" Binding="{Binding PlayBackWordCount}"/>
@@ -245,7 +245,7 @@
                                 <ToggleButton VerticalAlignment="Top" Background="{DynamicResource MahApps.Brushes.Badged.Background}" Grid.Row="1" FontSize="10" IsChecked="{Binding Story.EngDictionaryF}" Cursor="Hand"/>
                                 <TextBlock Margin="5,0" Foreground="White"  Text="English"/>
                             </StackPanel>
-                            <DataGrid x:Name="word_dg" IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding Story.PhraseItems.SelectedItem.Words.Items}" 
+                            <DataGrid SelectionMode="Single" x:Name="word_dg" IsReadOnly="True" AutoGenerateColumns="False" DataContext="{Binding}" ItemsSource="{Binding Story.PhraseItems.SelectedItem.Words.Items}" 
                               SelectedItem="{Binding Story.PhraseItems.SelectedItem.Words.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Word" Binding="{Binding Word}" Width="*"/>
