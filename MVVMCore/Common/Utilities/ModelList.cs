@@ -40,11 +40,31 @@ namespace MVVMCore.Common.Utilities
 			}
 		}
 
-		#region 要素[Items]プロパティ
-		/// <summary>
-		/// 要素[Items]プロパティ用変数
-		/// </summary>
-		ObservableCollection<T> _Items = new ObservableCollection<T>();
+        #region 現在のインデックス
+        /// <summary>
+        /// 現在のインデックス
+        /// </summary>
+        public int CurrentIndex
+		{
+			get
+			{
+				if (this.SelectedItem != null && this.Items != null && this.Items.Count > 0)
+				{
+					return this.Items.IndexOf(this.SelectedItem);
+				}
+				else
+				{
+					return -1;
+				}
+			}
+		}
+        #endregion
+
+        #region 要素[Items]プロパティ
+        /// <summary>
+        /// 要素[Items]プロパティ用変数
+        /// </summary>
+        ObservableCollection<T> _Items = new ObservableCollection<T>();
 		/// <summary>
 		/// 要素[Items]プロパティ
 		/// </summary>
@@ -60,7 +80,8 @@ namespace MVVMCore.Common.Utilities
 				{
 					_Items = value;
 					NotifyPropertyChanged("Items");
-				}
+					NotifyPropertyChanged("CurrentIndex");
+                }
 			}
 		}
 		#endregion
@@ -86,8 +107,9 @@ namespace MVVMCore.Common.Utilities
 				{
 					_SelectedItem = value;
 					NotifyPropertyChanged("SelectedItem");
-				}
-			}
+                    NotifyPropertyChanged("CurrentIndex");
+                }
+            }
 		}
 		#endregion
 
