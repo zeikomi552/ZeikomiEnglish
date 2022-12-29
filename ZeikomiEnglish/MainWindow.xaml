@@ -28,6 +28,9 @@
         <b:EventTrigger EventName="PreviewKeyDown">
             <b:CallMethodAction TargetObject="{Binding}" MethodName="KeyDown"/>
         </b:EventTrigger>
+        <b:EventTrigger EventName="Closing">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="Close"/>
+        </b:EventTrigger>
     </b:Interaction.Triggers>
 
     <Grid>

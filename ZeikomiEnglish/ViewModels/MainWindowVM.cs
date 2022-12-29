@@ -7,6 +7,7 @@ using MVVMCore.Common.Utilities;
 using MVVMCore.Common.Wrapper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -126,7 +127,14 @@ namespace ZeikomiEnglish.ViewModels
         {
             try
             {
-
+                // アプリケーションの終了確認
+                if (ShowMessage.ShowQuestionYesNo("Do you want to close the application?", "Question") == MessageBoxResult.No)
+                {
+                    if (e != null && (e as CancelEventArgs) != null)
+                    {
+                        ((CancelEventArgs)e).Cancel = true; // 終了キャンセル
+                    }
+                }
             }
             catch (Exception ex)
             {
