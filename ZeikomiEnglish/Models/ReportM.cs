@@ -55,6 +55,7 @@ namespace ZeikomiEnglish.Models
             ws.Cell(1, col++).Value = "Reigstered Date";                    // 登録日時
             ws.Cell(1, col++).Value = "Total playback time(sec)";           // 合計再生時間
             ws.Cell(1, col++).Value = "Total playback word count";          // 合計再生単語数
+            ws.Cell(1, col++).Value = "Total playback phrase count";        // 合計再生フレーズ数
             ws.Cell(1, col++).Value = "Total word translate count";         // 単語検索回数
             ws.Cell(1, col++).Value = "Total phrase translate count";       // フレーズ検索回数
             ws.Cell(1, col++).Value = "Phrase count";                       // フレーズ数
@@ -67,6 +68,7 @@ namespace ZeikomiEnglish.Models
             ws.Cell(row, col++).Value = DateTime.Now;                         // 現在時刻
             ws.Cell(row, col++).Value = story.TotalElapsedTime;               // 合計再生時間
             ws.Cell(row, col++).Value = story.TotalPlaybackWordCount;         // 合計単語数
+            ws.Cell(row, col++).Value = story.TotalPlayBackPhraseCount;       // 合計再生フレーズ数
             ws.Cell(row, col++).Value = story.WordTranslateCount;             // 単語検索回数
             ws.Cell(row, col++).Value = story.PhraseTranslateCount;           // フレーズ検索回数
             ws.Cell(row, col++).Value = story.PhraseItems.Count;              // フレーズ数
@@ -106,7 +108,7 @@ namespace ZeikomiEnglish.Models
             foreach (var tmp in story.PhraseItems.Items)
             {
                 col = 1;
-                ws.Cell(row, col++).Value = tmp.PlayBackWordCount;          // 単語数
+                ws.Cell(row, col++).Value = tmp.PlayBackWordCount;  // 単語数
                 ws.Cell(row, col++).Value = tmp.PlayCount;          // 再生回数
                 ws.Cell(row, col++).Value = tmp.SpeechSec;          // 再生時間
                 ws.Cell(row, col++).Value = tmp.TranslateCount;     // 翻訳回数

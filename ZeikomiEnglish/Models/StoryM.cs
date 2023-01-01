@@ -115,6 +115,30 @@ namespace ZeikomiEnglish.Models
         }
         #endregion
 
+        #region 合計フレーズ再生回数[TotalPlayBackPhraseCount]プロパティ
+        /// <summary>
+        /// 合計フレーズ再生回数[TotalPlayBackPhraseCount]プロパティ用変数
+        /// </summary>
+        int _TotalPlayBackPhraseCount = 0;
+        /// <summary>
+        /// 合計フレーズ再生回数[TotalPlayBackPhraseCount]プロパティ
+        /// </summary>
+        public int TotalPlayBackPhraseCount
+        {
+            get
+            {
+                return _TotalPlayBackPhraseCount;
+            }
+            set
+            {
+                if (!_TotalPlayBackPhraseCount.Equals(value))
+                {
+                    _TotalPlayBackPhraseCount = value;
+                    NotifyPropertyChanged("TotalPlayBackPhraseCount");
+                }
+            }
+        }
+        #endregion
 
         #region フレーズを翻訳した回数[PhraseTranslateCount]プロパティ
         /// <summary>
@@ -407,8 +431,9 @@ namespace ZeikomiEnglish.Models
                     if (tm.TotalSeconds > 0)
                     {
                         this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                        this.TotalPlaybackWordCount += phrase_tmp.PlayBackWordCount;                // 合計再生単語数
-                        phrase_tmp.PlayCount++;                 // 再生回数インクリメント
+                        this.TotalPlaybackWordCount += phrase_tmp.PlayBackWordCount;        // 合計再生単語数
+                        this.TotalPlayBackPhraseCount++;                                    // 合計フレーズ再生回数カウントアップ
+                        phrase_tmp.PlayCount++;                                             // 再生回数インクリメント
                     }
                     else
                     {
@@ -460,8 +485,9 @@ namespace ZeikomiEnglish.Models
                             if (tm.TotalSeconds > 0)
                             {
                                 this.TotalElapsedTime += phrase_tmp.SpeechSec = tm.TotalSeconds;    // 再生時間保存
-                                this.TotalPlaybackWordCount += phrase_tmp.PlayBackWordCount;                        // 合計再生単語数
-                                phrase_tmp.PlayCount++;                 // 再生回数インクリメント
+                                this.TotalPlaybackWordCount += phrase_tmp.PlayBackWordCount;        // 合計再生単語数
+                                this.TotalPlayBackPhraseCount++;                                    // 合計フレーズ再生回数カウントアップ
+                                phrase_tmp.PlayCount++;                                             // 再生回数インクリメント
                             }
                             else
                             {
