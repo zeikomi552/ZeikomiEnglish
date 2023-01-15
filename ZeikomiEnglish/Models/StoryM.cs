@@ -9,6 +9,7 @@ using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace ZeikomiEnglish.Models
 {
@@ -520,6 +521,35 @@ namespace ZeikomiEnglish.Models
                 url_base = "https://www.deepl.com/ja/translator#en/ja/{0}";   // DeepLのURL
             }
 
+            // nullチェック
+            if (this.PhraseItems.SelectedItem != null)
+            {
+                string url = string.Format(url_base, this.PhraseItems.SelectedItem.Phrase);   // URL作成
+
+                // nullチェック
+                if (wv2 != null && wv2.CoreWebView2 != null)
+                {
+                    // URLを開く
+                    wv2.CoreWebView2.Navigate(url);
+
+                    // フレーズ検索回数
+                    this.PhraseTranslateCount++;
+
+                    // 個別フレーズ翻訳回数のインクリメント
+                    this.PhraseItems.SelectedItem.TranslateCount++;
+                }
+            }
+        }
+        #endregion
+
+        #region フレーズの翻訳
+        /// <summary>
+        /// フレーズの翻訳
+        /// </summary>
+        /// <param name="wv2">WebView2コントロール</param>
+        public void SearchPhrase(Microsoft.Web.WebView2.Wpf.WebView2 wv2)
+        {
+            var url_base = "https://www.bing.com/images/search?q={0}&setlang=en";   // Google翻訳のURL
 
             // nullチェック
             if (this.PhraseItems.SelectedItem != null)
@@ -555,6 +585,36 @@ namespace ZeikomiEnglish.Models
             {
                 url_base = "https://dictionary.cambridge.org/dictionary/english/{0}";
             }
+
+            // nullチェック
+            if (this.PhraseItems.SelectedItem != null && this.PhraseItems.SelectedItem.Words.SelectedItem != null)
+            {
+                string url = string.Format(url_base, this.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
+
+                // nullチェック
+                if (wv2 != null && wv2.CoreWebView2 != null)
+                {
+                    // URLを開く
+                    wv2.CoreWebView2.Navigate(url);
+
+                    // 単語検索回数インクリメント
+                    this.WordTranslateCount++;
+
+                    // 個別単語翻訳回数のインクリメント
+                    this.PhraseItems.SelectedItem.Words.SelectedItem.TranslateCount++;
+                }
+            }
+        }
+        #endregion
+
+        #region 単語の検索
+        /// <summary>
+        /// 単語の検索
+        /// </summary>
+        /// <param name="wv2">WebView2コントロール</param>
+        public void SeachWord(Microsoft.Web.WebView2.Wpf.WebView2 wv2)
+        {
+            var url_base = "https://www.bing.com/images/search?q={0}&setlang=en";   // Google翻訳のURL
 
             // nullチェック
             if (this.PhraseItems.SelectedItem != null && this.PhraseItems.SelectedItem.Words.SelectedItem != null)

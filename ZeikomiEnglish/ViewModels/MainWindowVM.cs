@@ -75,6 +75,8 @@ namespace ZeikomiEnglish.ViewModels
 
                 // 固定バージョンのブラウザを配布
                 await wnd.WebView2Ctrl.EnsureCoreWebView2Async(webView2Environment);
+                // 固定バージョンのブラウザを配布
+                await wnd.WebView2Ctrl2.EnsureCoreWebView2Async(webView2Environment);
             }
             catch (Exception ex)
             {
@@ -178,6 +180,7 @@ namespace ZeikomiEnglish.ViewModels
                 if (wnd != null)
                 {
                     this.Story.TranslatePhrase(wnd.WebView2Ctrl);
+                    this.Story.SearchPhrase(wnd.WebView2Ctrl2);
                 }
             }
             catch (Exception ex)
@@ -204,6 +207,7 @@ namespace ZeikomiEnglish.ViewModels
                 if (wnd != null)
                 {
                     this.Story.TranslateWord(wnd.WebView2Ctrl);
+                    this.Story.SeachWord(wnd.WebView2Ctrl2);
                 }
             }
             catch (Exception ex)
@@ -442,10 +446,12 @@ namespace ZeikomiEnglish.ViewModels
                                     if (tmp != null)
                                     {
                                         this.Story.TranslateWord(wnd.WebView2Ctrl);
+                                        this.Story.SeachWord(wnd.WebView2Ctrl2);
                                     }
                                     else
                                     {
                                         this.Story.TranslatePhrase(wnd.WebView2Ctrl);
+                                        this.Story.SearchPhrase(wnd.WebView2Ctrl2);
                                     }
 
                                     key_eve.Handled = true; // キー入力解除

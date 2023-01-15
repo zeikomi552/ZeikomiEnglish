@@ -270,8 +270,15 @@
                 </Grid>
             </Grid>
 
-            <GroupBox Margin="5" Header="Dictionary" Grid.Column="1">
-                <Wpf:WebView2 x:Name="WebView2Ctrl" Margin="5"/>
+            <GroupBox Margin="5" Header="Web" Grid.Column="1">
+                <TabControl>
+                    <TabItem Header="Translate">
+                        <Wpf:WebView2 x:Name="WebView2Ctrl" Margin="5"/>
+                    </TabItem>
+                    <TabItem Header="Search">
+                        <Wpf:WebView2 x:Name="WebView2Ctrl2" Margin="5"/>
+                    </TabItem>
+                </TabControl>
             </GroupBox>
 
         </Grid>
