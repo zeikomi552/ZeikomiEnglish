@@ -50,6 +50,31 @@ namespace ZeikomiEnglish.ViewModels
         }
         #endregion
 
+        #region 選択しているタブ[SelectedTab]プロパティ
+        /// <summary>
+        /// 選択しているタブ[SelectedTab]プロパティ用変数
+        /// </summary>
+        int _SelectedTab = 0;
+        /// <summary>
+        /// 選択しているタブ[SelectedTab]プロパティ
+        /// </summary>
+        public int SelectedTab
+        {
+            get
+            {
+                return _SelectedTab;
+            }
+            set
+            {
+                if (!_SelectedTab.Equals(value))
+                {
+                    _SelectedTab = value;
+                    NotifyPropertyChanged("SelectedTab");
+                }
+            }
+        }
+        #endregion
+
         #region キャッシュの保存先ディレクトリ
         /// <summary>
         /// キャッシュの保存先ディレクトリ
@@ -72,11 +97,17 @@ namespace ZeikomiEnglish.ViewModels
 
                 // 環境の作成
                 var webView2Environment = await Microsoft.Web.WebView2.Core.CoreWebView2Environment.CreateAsync(null, browserExecutableFolder);
-
                 // 固定バージョンのブラウザを配布
+                this.SelectedTab = 0;
                 await wnd.WebView2Ctrl.EnsureCoreWebView2Async(webView2Environment);
                 // 固定バージョンのブラウザを配布
+                this.SelectedTab = 1;
                 await wnd.WebView2Ctrl2.EnsureCoreWebView2Async(webView2Environment);
+                // 固定バージョンのブラウザを配布
+                this.SelectedTab = 2;
+                await wnd.WebView2Ctrl3.EnsureCoreWebView2Async(webView2Environment);
+
+                this.SelectedTab = 0;
             }
             catch (Exception ex)
             {
@@ -179,8 +210,24 @@ namespace ZeikomiEnglish.ViewModels
                 // nullチェック
                 if (wnd != null)
                 {
-                    this.Story.TranslatePhrase(wnd.WebView2Ctrl);
-                    this.Story.SearchPhrase(wnd.WebView2Ctrl2);
+                    switch (this.SelectedTab)
+                    {
+                        case 0:
+                            {
+                                this.Story.TranslatePhrase(wnd.WebView2Ctrl);
+                                break;
+                            }
+                        case 1:
+                            {
+                                this.Story.SearchPhrase(wnd.WebView2Ctrl2);
+                                break;
+                            }
+                        case 2:
+                            {
+                                this.Story.SearchPhraseYouglish(wnd.WebView2Ctrl3);
+                                break;
+                            }
+                    }
                 }
             }
             catch (Exception ex)
@@ -206,8 +253,24 @@ namespace ZeikomiEnglish.ViewModels
                 // nullチェック
                 if (wnd != null)
                 {
-                    this.Story.TranslateWord(wnd.WebView2Ctrl);
-                    this.Story.SeachWord(wnd.WebView2Ctrl2);
+                    switch (this.SelectedTab)
+                    {
+                        case 0:
+                            {
+                                this.Story.TranslateWord(wnd.WebView2Ctrl);
+                                break;
+                            }
+                        case 1:
+                            {
+                                this.Story.SeachWord(wnd.WebView2Ctrl2);
+                                break;
+                            }
+                        case 2:
+                            {
+                                this.Story.SeachWordYouglish(wnd.WebView2Ctrl3);
+                                break;
+                            }
+                    }
                 }
             }
             catch (Exception ex)

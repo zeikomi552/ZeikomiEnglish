@@ -571,6 +571,35 @@ namespace ZeikomiEnglish.Models
             }
         }
         #endregion
+        #region フレーズの翻訳
+        /// <summary>
+        /// フレーズの翻訳
+        /// </summary>
+        /// <param name="wv2">WebView2コントロール</param>
+        public void SearchPhraseYouglish(Microsoft.Web.WebView2.Wpf.WebView2 wv2)
+        {
+            var url_base = "https://youglish.com/pronounce/{0}/english?";   // Google翻訳のURL
+
+            // nullチェック
+            if (this.PhraseItems.SelectedItem != null)
+            {
+                string url = string.Format(url_base, this.PhraseItems.SelectedItem.Phrase);   // URL作成
+
+                // nullチェック
+                if (wv2 != null && wv2.CoreWebView2 != null)
+                {
+                    // URLを開く
+                    wv2.CoreWebView2.Navigate(url);
+
+                    // フレーズ検索回数
+                    this.PhraseTranslateCount++;
+
+                    // 個別フレーズ翻訳回数のインクリメント
+                    this.PhraseItems.SelectedItem.TranslateCount++;
+                }
+            }
+        }
+        #endregion
 
         #region 単語の検索
         /// <summary>
@@ -627,11 +656,41 @@ namespace ZeikomiEnglish.Models
                     // URLを開く
                     wv2.CoreWebView2.Navigate(url);
 
-                    // 単語検索回数インクリメント
-                    this.WordTranslateCount++;
+                    //// 単語検索回数インクリメント
+                    //this.WordTranslateCount++;
 
-                    // 個別単語翻訳回数のインクリメント
-                    this.PhraseItems.SelectedItem.Words.SelectedItem.TranslateCount++;
+                    //// 個別単語翻訳回数のインクリメント
+                    //this.PhraseItems.SelectedItem.Words.SelectedItem.TranslateCount++;
+                }
+            }
+        }
+        #endregion
+
+        #region 単語の検索
+        /// <summary>
+        /// 単語の検索
+        /// </summary>
+        /// <param name="wv2">WebView2コントロール</param>
+        public void SeachWordYouglish(Microsoft.Web.WebView2.Wpf.WebView2 wv2)
+        {
+            var url_base = "https://youglish.com/pronounce/{0}/english?";   // Google翻訳のURL
+
+            // nullチェック
+            if (this.PhraseItems.SelectedItem != null && this.PhraseItems.SelectedItem.Words.SelectedItem != null)
+            {
+                string url = string.Format(url_base, this.PhraseItems.SelectedItem.Words.SelectedItem.Word);   // URL作成
+
+                // nullチェック
+                if (wv2 != null && wv2.CoreWebView2 != null)
+                {
+                    // URLを開く
+                    wv2.CoreWebView2.Navigate(url);
+
+                    //// 単語検索回数インクリメント
+                    //this.WordTranslateCount++;
+
+                    //// 個別単語翻訳回数のインクリメント
+                    //this.PhraseItems.SelectedItem.Words.SelectedItem.TranslateCount++;
                 }
             }
         }
